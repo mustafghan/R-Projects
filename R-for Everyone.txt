@@ -1,0 +1,5 @@
+
+# Chapter 4 ---------------------------------------------------------------
+
+ ## Variable Assignment: There are several ways of assigning variables in R. 
+
