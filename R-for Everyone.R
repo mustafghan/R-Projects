@@ -1,26 +1,24 @@
 
-
-# Chapter 4 ---------------------------------------------------------------
-
+# Chapter 4: Basics of R --------------------------------------------------
 
 # 4.2 Variables -----------------------------------------------------------
 
 
 
 ## 4.2.1 Variable Assignment: There are several ways of assigning variables in R. 
-1: x <- 2
-2: y = 5
-3: 3 -> z
+x <- 2
+y = 5
+3 -> z
 assign ("j", 4)
  
 ## You can do multiple assignments
 
-1: a <- b <- 7
+a <- b <- 7
 
 ## 4.2.2 Removing Variables
 
-1: rm(j) # This frees up memory in R
-2: gc(a) # This frees up memory in the operating system. R does it automatically so you don't necessarily have to do this R does it for you already. 
+rm(j) # This frees up memory in R
+gc(a) # This frees up memory in the operating system. R does it automatically so you don't necessarily have to do this R does it for you already. 
 
 
 # 4.3 Data Types ----------------------------------------------------------
@@ -196,5 +194,230 @@ pipe_example_2 %>% mean (na.rm = TRUE)
 
 
 # 5.1 data.frames ---------------------------------------------------------
+
+# data.frame is just like an Excel spreadsheet in that it has columns and rows. In statistical terms, each column is a variable and each row is an observation. 
+ # In terms of how R organizes data.frames, each column is actually a vector, each different types of data. This also implies that within a column each element must be of the same type, just like with vectors. 
+ # There are numerous ways to construct a data.frame, the simplest being to use the data.frame function. 
+x <- 10:1
+y <- -4:5
+q <- c("Hockey", "Football", "Baseball", 'Curling', 'Rugby', "Lacrosse", "Basketball", "Tennis", 'Cricket', 'Soccer')
+theDF <- data.frame(x,y,q)
+
+# We can assign names during the creation process
+
+theDF <- data.frame(First = x, Second = y, Sport = q)
+
+#To check for row and column and both use
+nrow(theDF)
+ncol(theDF)
+dim (theDF)
+
+# We can also check names
+
+names(theDF)
+
+# or individual elements
+
+names(theDF) [3]
+
+# we can also assign row names
+
+rownames(theDF)
+rownames(theDF) <- c("One", "Two", "Three", "Four", "Five", "Six", 'Seveon', 'Eight', 'Nine', "Ten")
+rownames(theDF)
+
+# You can also set it back to generic by the following code
+rownames (theDF) <- NULL
+
+# you can use head() or tail() to print only first or last few rows from a data.frame
+
+head(theDF)
+tail(theDF)
+
+# or set how many rows you want to see
+
+head(theDF, n = 10)
+
+head(theDF, n = 20)
+
+# We can check the class as well
+
+class(theDF)
+# You can access specific column using $ or squar bracket
+
+theDF$First
+
+# You can access position, First is row, second is the column number. So to get the third row from the second column we use 
+theDF[3, 2]
+
+# To specify more than one row or column, use a vector of indices. Here it is row 3, columns 2 through 3
+
+theDF[3, 2:3]
+
+# rows 3 and 5, column 2
+# since only one column was selected it was returned as a vector
+# hence the column names will not be printed
+theDF[c(3,5), 2]
+
+# rows 3 and 5, columns 2 through 3
+theDF[c(3,5), 2:3]
+
+# To access an entire row, specefif that row, and likewise to access only a column, specify that column. 
+theDF[ ,3]
+
+# all of columns 2 through 3
+theDF[ ,2:3]
+
+# all of row 2
+theDF[2, ]
+
+# all of rows 2 through 4
+theDF[2:4, ]
+
+# you can access multiple columns by name, by making column argument a character vector of the names
+theDF[, c("First", "Sport")]
+
+# Yet another way of accessing a specefic column
+theDF["Sport"]
+
+# or the following, and return a (factor) vector
+theDF[, 'Sport']
+class(theDF[, "Sport"])
+
+# or the following
+theDF[["Sport"]]
+class(theDF[["Sport"]])
+
+# To get a single-column data.frame instead of vector, you can use the drop = FALSe
+theDF[, "Sport", drop = FALSE]
+class(theDF[, "Sport", drop = FALSE])
+
+# this does the same
+theDF[, 3, drop = FALSE]
+class(theDF[, 3, drop = FALSE])
+
+# Factors are stored specially. To see how they would be represented in data.frame form, use modle.matrix to create a set of indicators (or dummy) variables. That is one column for each level of a factor, with a 1 if a row contains that level or a 0 otherwise. 
+
+newFactor <- factor(c("Pennsylvania", "New York", "New Jersey", "New York", "Tennessee", "Massachusetts", "Pennsylvania", "New York"))
+
+model.matrix(~ newFactor -1)
+
+
+
+# 5.2 Lists ---------------------------------------------------------------
+
+# Lists are created with the list function where each argument to the function becomes an element of the list
+# create a three element list
+list(1,2,3)
+
+# creates a single element list. 
+# the only element is a vector that has three elements
+list(c(1,2,3))
+
+# creates a two element list
+# the first is a three element vector
+# the second element is a five element vector
+list3 <- list(c(1,2,3), 3:7)
+
+# two element list
+# first element is a data.frame
+# second element is a 10 element vector
+list (theDF, 1:10)
+
+# three element list
+# fist is a data.frame
+# second is a vector
+# third is list3 which holds two vectors
+list5 <- list(theDF, 1:10, list3)
+
+# LIke data.frames, lists can have names. Each element has a unique name that can be either viewed or assigned using names. 
+names(list5) <- c("data.frame", "Vector", "list")
+names(list5)
+
+# You can also assigned them during creation
+list6 <- list(TheDataFrame = theDF, TheVector = 1:10, TheList = list3)
+names(list6)
+
+# You can also create an empty list. The bracket in the beginning allows you to show the result while creating using vector
+(emptyList <- vector(mode = "list", length = 4))
+
+# To access an individual element of a list, use double square brackets, specifying either the element or the name. Note that this allows access to only one element at a time
+list5[[2]]
+
+#or using the name
+list5[["data.frame"]]
+
+# Once an element is accessed it can be treated as if that actual element is being used, allowing nested indexing of elements. 
+list6[[1]]$Sport
+
+# It is possible to append elements to a list simpl by using an index (either numeric or named) that does not exist. 
+
+# see how long it currently is
+length (list5)
+
+# add a fourth element, unnamed
+list5[[4]] <- 2
+length(list5)
+
+# add a fifth element, name
+
+list5[["NewElement"]] <- 3:6
+length(list5)
+names(list5)
+
+
+# 5.3 Matrices ------------------------------------------------------------
+# It is similar to data.frame with one exception: every single element, regardless of column, must be the same type, most commonly all numerics. They also act similarly to Vectors with element-by-element addition, multiplication, subtraction, division and equality. The nrow, ncol, and dim functions work just like they do for data.frames. 
+
+# create a 5x2 matrix
+A <- matrix(1:10, nrow=5)
+
+# create another 5x2 matrix
+B <- matrix(21:30, nrow=5)
+
+# create another 5x2 matrix
+C <- matrix(21:40, nrow = 2)
+
+# you can use nrow, ncol, and dim
+
+nrow(A)
+ncol(A)
+dim(A)
+
+# add them
+A + B # and etc
+
+# see if the elements are equal
+A == B
+
+# There are two special vectors,letters and LETTERS, that contain the lower case and the upper case letters, respectively. 
+colnames(B) <- LETTERS[1:2]
+                       
+
+colnames(C) <- letters[1:10]
+
+# 5.4 Arrays --------------------------------------------------------------
+
+# An array is essentially a multidimensional vector. It must all be of the same type, and individual elements are accessed in a similiar fashion using []. First element is row index, second is column index, and remaining elements are for outer dimensions. 
+
+theArray <- array(1:12, dim = c(2,3,2))
+
+theArrayName <- array(1:12, 
+                      dim = c (2,3,3), 
+                      dimnames = list(
+                          c("One","Two"), 
+                          c("Yak", "Doo", "Say"), 
+                          c("Aik", "Do", "Theen")))
+
+theArrayName[1, ,] # first element of first row for every column and outside dimension
+
+theArrayName[1, , 1] # first elements of first row of only the first outside dimension
+
+theArrayName[, , 1] # all the elements of the first outside dimension
+
+# Chapter 6: Reading Data into R ------------------------------------------
+
+
+# 6.1 Reading CSVs --------------------------------------------------------
 
 
