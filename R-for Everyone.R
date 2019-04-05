@@ -375,7 +375,7 @@ A <- matrix(1:10, nrow=5)
 # create another 5x2 matrix
 B <- matrix(21:30, nrow=5)
 
-# create another 5x2 matrix
+# create another 2x10 matrix
 C <- matrix(21:40, nrow = 2)
 
 # you can use nrow, ncol, and dim
@@ -420,4 +420,167 @@ theArrayName[, , 1] # all the elements of the first outside dimension
 
 # 6.1 Reading CSVs --------------------------------------------------------
 
+# read.table is best way to read CSV files, but we can also use rea.csv, which is a wrapper around read.table.
+# you can read the csv file directly from the website for example. 
+
+theUrl <- "http://www.jaredlander.com/data/TomatoFirst.csv"
+tomato <- read.table(file = theUrl, header = TRUE, sep = ",")
+
+# 6.1.1 read_delim......... 
+# We use the readr package. Bunch of functions for reading text files, with read_delim the most common for reading text files. This is faster than read.table. 
+
+library(readr)
+tomato2 <- read_delim(file = theUrl, delim = ",") # This returns a tibble in stead of the regular data.frame. You can also use the hea.read_delim to display the data. 
+ # The other advantage is that you don't have to specify stringsasFactors = FALSE. Compare the Source column in tomato data.frame (shows it as factor). There are presets of read_csv and read_tsv. 
+
+# 6.1.2 fread.................
+# This is another option for reading large data quickly is fread from the data.table package. The first argument is the full filename or URL of the file to be read. The header argument indicates that the first row of the file holds the column names and the sep specifies the field delimiter. This function has a stringsAsFactors argument that is set to FALSE by default. 
+
+library(data.table)
+theUrl_2 <- "C:\\Users\\mustafa.zia\\Desktop\\R\\R-Projects\\TomatoFirst.csv"
+tomato_1 <- fread(input=theUrl_2,sep=',', header=TRUE)
+
+# So both read_delim and fread are faster than read.table. The option of which one to use depends on where dplyr or 
+# data.table is preferrred for data manipulation. 
+
+# 6.2 Excel Data ----------------------------------------------------------
+
+# You can read excel files (both xls and xlsx) using the read_excel. However, unlike fread and read_delim, you cannot read the excel file directly from a site. You have to download it first and then single Excel sheet. If you want to do it directly from a website, you can use the download.file syntax. 
+
+download.file(url = 'http://www.jaredlander.com/data/ExcelExample.xlsx', destfile = 'C:\\Users\\mustafa.zia\\Desktop\\R\\R-Projects\\ExcelExample.xlsx', method = 'curl')
+
+# After downloading the file, we check the sheets in the Excel file. 
+
+library(readxl)
+excel_sheets('C:\\Users\\mustafa.zia\\Desktop\\R\\R-Projects\\ExcelExample.xlsx')
+
+# By default read_excel reads the first sheet and creates a tibble instead of a data.frame. data.frame
+
+tomatoXL <- read_excel('C:\\Users\\mustafa.zia\\Desktop\\R\\R-Projects\\ExcelExample.xlsx')
+
+ # Specifying which sheet to read can be done by either supplying the sheet position as a number or the actual name of the sheet as a character. 
+
+# using position
+
+wineXL <- read_excel ("C:\\Users\\mustafa.zia\\Desktop\\R\\R-Projects\\ExcelExample.xlsx", sheet = 2)
+
+# using name
+wineXL2 <- read_excel ("C:\\Users\\mustafa.zia\\Desktop\\R\\R-Projects\\ExcelExample.xlsx", sheet = "Wine")
+ 
+
+
+# 6.3 - 6.4 Reading from Databases and also from Other Statistical --------
+
+# You can read from Databases similar to the excel file, but it's not really that widely used anyways. 
+# You can read files from spss, sas, stata, using the foreign which is similar to read.table in that you get a data.frame. # You can also use the haven package and read files into a tibble (read_spss, read_sas, read_stata)
+
+
+# 6.5 R Binary Files ------------------------------------------------------
+
+# When working with other R programmers, a good way to pass around data--or any R objects such as variables and functions is to use RData files. These are binary files that represents objects of any kind, whether single or multiple objects and can be passed among Windows, Mac, Linux without any issues. Example below
+
+# save the tomata data.frame to disk
+
+save(tomato, file = "C:/Users/mustafa.zia/Desktop/R/R-Projects/tomata.rdata")
+
+# remove tomato from memory
+rm(tomato)
+
+# read it from the rdata file
+load("C:\\Users\\mustafa.zia\\Desktop\\R\\R-Projects\\tomata.rdata")
+
+# Now let's create a few objects to store in a single RData file, remove them and then load them again. 
+
+# create some objects
+n <- 20
+r <- 1:10
+w <- data.frame(n, r)
+
+# save them
+save(n,r,w, file = "C:/Users/mustafa.zia/Desktop/R/R-Projects/multiple.rdata")
+
+# remove them
+rm(n,r,w)
+
+# load them
+load("C:/Users/mustafa.zia/Desktop/R/R-Projects/multiple.rdata")
+
+
+ # If you just saved the w without the n and the r, then you won't be able to type n and see the value as it is not loaded as a separate object. 
+
+save(w, file = "C:/Users/mustafa.zia/Desktop/R/R-Projects/w.rdata")
+load("C:/Users/mustafa.zia/Desktop/R/R-Projects/w.rdata")
+
+# so now when you type n, you won't get anything cause it wasn't loaded. 
+
+
+# 6.6 Data Included with R ------------------------------------------------
+
+# You can use the ggplot2 comes with the diamond dataset. You can call it using the data function.
+
+data(diamonds, package = 'ggplot2')
+
+
+# Extract Data from Web Sites ---------------------------------------------
+
+# 6.7.1 Simple HTML Tables....
+# If the data is stored neatly in an HTML table, we can use readHTMLTable in the XML package to easily extract it. 
+
+library(XML)
+theURL_XML <- "https://www.jaredlander.com/2012/02/another-kind-of-super-bowl-pool/"
+bowlPool <- readHTMLTable(theURL_XML, which = 1, header=FALSE, stringsASFactors=FALSE)
+
+# the which says which table to read. it could as well be the second, third, or fourth table. 
+
+# 6.7.2 Scraping Web Data......................
+
+# Information is often scattered about in tables, divs, spans, or other HTML delements. As an example we put the menu and restaurant details for RIbalta, a beloved NY pizzeria, into an HTML file. The address and phone number are stored in an ordered list, section identifiers are in spans and the items and prices are in tables. We use the rvest package to extract the data into a usable format. 
+
+library(rvest)
+ribalta <- read_html("http://www.jaredlander.com/data/ribalta.html")
+class(ribalta)
+ribalta
+
+# By exploring the HTML we see that the address is tored in a span, which is an element of an ordered list. Firs twe use html_nodes to select all span alements within ul elements. .........Won't go much into it. 
+
+
+# 6.8 Reading JSON Data ---------------------------------------------------
+
+# A popular format for data, especially for APIs and document databases, is JSON, which stands for JavaScript Object Notation. It is a data format, stored in plain text, which is well suited for nested data. The two main R packages for reading JSON data are rjson and jsonlite. 
+
+# The data for this example is a sample from a JSON file listing some of our favorite pizza places in New York. There is an entry for each pizzeria. Within that is a Name element and an array, named Details, that holds elements for Address, City, State, Zip and Phone. 
+
+#The fromJSON function reads the file into R and parses the JSON text. By default, it attempts to sipmlify the data into a data.frame. 
+
+library(jsonlite)
+pizza <- fromJSON('http://www.jaredlander.com/data/PizzaFavorites.json')
+
+# The result is a two-column data.frame where the first column is the Name and the second column, named Details, is actually a one-row data.frame for each row of the outer data.frame. This may seem odd, but storing objects in cells of data.frames has long been possible and has recently become more and more the norm. We can see the Details is a list-column where each element is a data.frame. 
+class(pizza)
+class(pizza$Details)
+class(pizza$Name)
+class(pizza$Details[[1]])
+
+# This nested structure of a data.frame within a data.frame is best unraveled using the tools availalbe in dplyr, tidyr, and purr. 
+
+
+# Chapter 7: Statistical Graphics -----------------------------------------
+
+# Chapter 8: Writing R functions ------------------------------------------
+
+# Really good for cutting down on code that needs to be repeated over and over again. However, in R it is alittle different compared with other programming languages. 
+
+# 8.1 Hello, World! -------------------------------------------------------
+
+# Function that simply prints "Hello, World!"
+say.hello <- function()
+{
+  print("Hello, World!")
+}
+# First, note that in R the period (.) is just another character and has no special meaning, unlike in other languages. The body of the function is enclosed in curly braces ({}). This is not necessary if the function contains only one line, but that is rare. Notice the indenting for the commands inside the function. While not required, it is good practice to properly indent code to ensure readability. It is here in the body that we put the lines of code we want the function to perform. Calling say.hello() prints as described. 
+
+say.hello ()
+
+# 8.2 Function Arguments --------------------------------------------------
+# We use the sprintf function. It's first argument is a string with special input characters and subsequent arguments that will be substituted into the special input characters. 
 
