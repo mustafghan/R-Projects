@@ -190,6 +190,7 @@ pipe_example_2 %>% mean (na.rm = TRUE)
 
 
 
+
 # Chapter 5: Advanced Data Structures -------------------------------------
 
 
@@ -415,6 +416,7 @@ theArrayName[1, , 1] # first elements of first row of only the first outside dim
 
 theArrayName[, , 1] # all the elements of the first outside dimension
 
+
 # Chapter 6: Reading Data into R ------------------------------------------
 
 
@@ -564,7 +566,9 @@ class(pizza$Details[[1]])
 # This nested structure of a data.frame within a data.frame is best unraveled using the tools availalbe in dplyr, tidyr, and purr. 
 
 
+
 # Chapter 7: Statistical Graphics -----------------------------------------
+
 
 # Chapter 8: Writing R functions ------------------------------------------
 
@@ -584,3 +588,291 @@ say.hello ()
 # 8.2 Function Arguments --------------------------------------------------
 # We use the sprintf function. It's first argument is a string with special input characters and subsequent arguments that will be substituted into the special input characters. 
 
+# one substitution example
+sprintf("Hello %s", "Jared")
+
+# two substitution example
+sprintf("Hello %s, today is %s", "Mustafa","wonderful day")
+
+# We now use springf to build a string to print based on a function's argument
+
+hello.person <- function(name)
+{
+    print(sprintf("Hello %s", name))
+}
+
+hello.person("Mustafa")
+hello.person("Sophia")
+
+#The argument name can be used as a variable inside the function (it does not exist outside the function). It can also be used like any other variable and as an argument to further function calls. 
+
+# We can add a second argument to be printed as well. When calling functions with more than one argument, there are two ways to specify which argument goes with which value, either positionally or by name. 
+
+hello.person_2 <- function(first,last)
+{
+    print(sprintf("Hello %s %s", first, last))
+    
+}
+
+# by position
+hello.person_2("Mustafa", "Zia")
+
+# by name
+hello.person_2(first = "Mustafa", last = "Zia")
+
+# the other order
+hello.person_2(last = "Zia", first = "Mustafa")
+
+# just specify one name
+hello.person_2(last = "Zia", "Mustafa")
+
+# specify the other
+hello.person_2(first = "Mustafa", "Zia")
+
+# Being able to specify the arguments by name adds a lot of flexibility to calling functions. Even partial argument names can be supplied, but it is not really recommended and should be done with caution. 
+
+hello.person_2(f = "Mustafa", l = "Zia")
+
+# 8.2.1 Default Arguments............................
+
+# When using multiple arguments it is sometimes desirable to not have to enter a value for each. In other languages functions can be overloaded by defining the function multiple times, each with a differing number of arguments. R instead provides the capability to specify default arguments. These can be NULL, characters, numbers, or any valid R object. Let's rewrite hello.person to provide "Doe" as the default last name
+
+hello.person_3 <- function(first, last = "Doe")
+{print(sprintf("Hello %s %s", first, last))
+}
+# Call without specifying last
+hello.person_3 ("Jared")
+
+# Call with a different last
+hello.person_3 ("Jared", "Lander")
+
+# 8.2.2 Extra Arguments..............................
+
+# R offers special operator that enables functions to take an arbitrary number of arguments that do not need to be specified in the function definition. this is the dot-dot-dot argument (...). This should be used very carefully, although it can provide great flexibility. For now we will just see how it can absorb extra arguments; later we will find a use for it when passing arguments between functions. 
+
+# First we have to build the function with ... to absorb the extra argument. 
+hello.person_4 <- function(first, last ="Doe", ...)
+{  
+    print(sprintf("Hello %s %s", first, last))
+}
+# call hello.person_4 with an extra argument
+hello.person_4 ("Jared", extra = "Goodbye")
+
+#call it with two valid arguments and a third
+hello.person_4 ("Jared", "Lander", "Goodbye")
+
+
+# 8.3 Return Values -------------------------------------------------------
+
+#Functions are generally used for computing some value, so they need a mechanism to supply that value back to the caller. This is called returning and is done quite easily. There are two ways to accomplish this with R. The value of the last line of code in a function is automatically returned, although this can be bad practice. The return command more explicitly specifies that a value should be returned and the function should be exited. To illustrate, we will build a function that doubles its only arguments and returns that value. 
+
+# first build it without an explicity return
+double.num <- function(x)
+{
+    x * 2
+}
+double.num(34)
+
+# now build it with an explicit return
+double.num_1 <- function(x)
+{
+    return(x * 2)
+}
+
+double.num_1 (55)
+
+# build it again, this time with another argument after the explicity return
+
+double.num_2 <- function(Mustafa)
+{
+    return(Mustafa * 6)
+    
+    # below here is not executed because function already exited
+    print("Hello!")
+    return(17)
+}
+double.num_2(5)
+
+# build it again, with only one explicit return
+
+double.num_3 <- function(y)
+{
+    (y * 5)
+    print("Hello!")
+    return(17)
+}
+
+double.num_3(5)
+
+
+# 8.4 do.call -------------------------------------------------------------
+
+# A particularly underused trick is the do.call function. This allows us to specify the name of a function either as a character or as an object, and provide arguments as a list. 
+
+do.call("hello.person_4", args=list(first="Shahram", last="Zia"))
+
+do.call(hello.person_3, args=list(first="Mustafa", last = "Zia"))
+
+# This is particularly useful when building a function that allows the user to specify an action. In the following example the user supplies a vector and a function to be run. 
+
+run.this <- function(x, func=mean)
+{
+    do.call(func, args=list(x))
+}
+
+# finds the mean by default
+run.this(1:50)
+
+# specify to calculate the mean
+
+run.this(1:10, mean)
+
+# calculate the sum
+run.this (1:10, sum)
+
+# calculate the standard deviation
+run.this(2:8, sd)
+
+
+# Chapter 9: Control Statements -------------------------------------------
+# Control statements allow us to control the flow of our programming and cause different things to happen, depending on the values of tests. Tests result in a logical, TRUE or FALSE, which is used in if-like statements. The main control statements are if, else, ifelse, and switch. 
+
+
+# 9.1 if and else ---------------------------------------------------------
+
+# The most common test is the if command. It essentially says if something is TRUE, then perform some action; otherwise, do not perform that action. The thing we are testing goes inside parentheses following the if command. The most basic checks are: equal to (==), less than (<), less than or equal to (<=), greater than (>), greater than or equal to (>=) and not equal (!=). 
+# If these tests pass they result in TRUE, and if they fail they result in FALSE. As noted in SEction 4.3.4, TRUE is numerically equivalent to 1 and FALSE is equivalent to 0. 
+as.numeric(TRUE)
+as.numeric(FALSE)
+
+# Tests don't have to be used inside if statements. 
+
+1 == 1
+1<1  # etc. 
+
+# Now we show how to use test inside an if statement. 
+# set up a variable to hold 1
+
+toCheck <- 1
+
+#if toCheck is equal to 1, print hello
+if(toCheck == 1)
+{
+    print("Hello")
+}
+
+#if toCheck is equal to 5, print hello
+if(toCheck == 5)
+{
+    print("Mustafa")
+}
+# Since toCheck is not equal to 5, when you run it nothing happens. Make sure the whoel statement is run.  
+
+# Notice that if statements are similar to functions, in that all statements (there can be one or multiple) go inside curly braces. Life is not always so simple that we want an action only if some relationship is TRUE. We often want a different action if that relationship is FALSE. In the following example we put an if statement followed by an else statement inside a function, so that it can be used repeatedly.
+
+# first create the function
+check.bool <- function(a)
+{
+    if (a == 1)
+    {
+        # if the input is equal to 1, print hello
+        print("hello")
+        
+    } else
+    {
+        print("goodbye")
+    }
+}
+
+# Notice that else is on the same line as its preceding closing curly brace (}). This is important, as the code will fail otherwise. Now let's use that function and see if it works. 
+
+check.bool(1)   # gives you hello
+check.bool(0)   # gives you goodbye
+check.bool("M") # gives you goodbey
+check.bool(TRUE)# gives you hello
+
+# Anything other than 1 caused the function ti print "goodbye". This is exactly what we wanted. Passing TRUE printed "hello" because TRUE is numerically the same as 1. 
+# Perhaps we want to successively test a few cases. That is where we can use else if. We first test a signel statement, then make another test, and then perhaps fall over to catch all. We will test is using a new check.bool
+
+check.bool_1 <- function(x)
+{    
+    if (x==1)
+    {
+        # if the input is equal to 1, print hello
+        print ("Hello")
+    }
+    else if (x == 0)
+    {
+        # if the input is equal to 0, print Goodbye
+        print ("Goodbye")
+    }
+    else
+    {
+        # otherwise print confused
+        print("confused")
+    }    
+}
+
+check.bool_1(1)   # gives you hello
+check.bool_1(0)   # gives you Goodbye
+check.bool_1("k") # gives you confused
+check.bool_1(5)   # gives you confused
+check.bool_1(FALSE) # gives you Goodbye
+
+# 9.2 Switch --------------------------------------------------------------
+
+# 
+
+
+# If we have multiple cases to check, writing else if repeatedly can be cumbersome and inefficient. This is where switch is most useful. The first argument is the value we are testing. Subsequent arguments are a particular value and what should be the result. The last argument, if not given a value, is the default result. Here we build a function that takes in a value and returns a corresponding result,
+
+use.switch <- function(x)
+{switch (x, 
+         "a" = "first",
+         "b" = "second",
+         "z" = "last",
+         "c" = "third",
+         "other")
+}
+use.switch("a")
+use.switch("c")
+use.switch("mustafa")
+use.switch(TRUE)
+
+# if the first argument is numeric, it is matched positionally to the followin arguments, regardless of the names of the subsequent arguments. If the numeric arguments is greater than the number of subsequent arguments, NULL is returned. 
+
+use.switch(2)
+use.switch(5)
+use.switch(8)
+
+is.null(use.switch(6))
+
+
+# 9.3 ifelese -------------------------------------------------------------
+
+# While if is like the if statment in traditional languages, ifelse is more like the if function in Excel. The first argument is the condition to be tested (much like in a traditional if statement), the second argument is the return value if the test is TRUE and the third argument is the return value if the test is FALSE. The beauty here -- unlike with the traditional if is that this works with VECTORIZED arguments. As is often the case in R, using vectorization avoids for loops and speeds up our code. The nuances of ifelse can be tricky, so we show numerous examples. We start with a very simple example, testing whether 1 is equal to 1 and printing "Yes" if that is TRUE and "No" if it is FAlSE. 
+
+# see if 1 == 1 
+ifelse( 1 == 1, "Yes", "No")
+
+# see if 1 == 0 
+ifelse(1 == 0, "Yes", "No")
+
+# This clearly gives us the results we want. ifelse uses all the regular equality tests seen in Section 9.1 and any other logical tests. It is worth noting, however, that if testing just a single element ( a vector of length 1 or a simple is.na), it is more efficient to use if than ifelse. This can result in nontrivial speedup of our code. 
+
+# Next we will illustrate a vectorized first argument. 
+
+toTest <- c(1, 1, 0, 1, 0, 1)
+ifelse(toTest == 1, "Yes", "No")
+
+# This returned "Yes" for each element of toTest that equaled 1 and "No" for each element of toTest that did not equal 1. The TRUE and FALSE arguemnts can even refer to the testing element. 
+
+ifelse(toTest == 1, toTest*3, toTest)
+
+# the FALSE argument is repeated as needed
+ifelse(toTest == 1, toTest*3, "Zero")
+
+# Now let's say that toTest has NA elements. In that case the corresponding result from ifelse is NA
+toTest[2] <- NA
+ifelse(toTest == 1, "Yes", "No")
+# The same goes for the rest of thec ode. The NA will have the NA element. 

@@ -1,0 +1,30 @@
+---
+title: "R For Everyone"
+author: "Mustafa Zia"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+# Chapter 4: Basics of R 
+
+## 4.2 Variables 
+
+### 4.2.1 Variable Assignment
+There are several ways of assigning variables in R. 
+```{r}
+x <- 2
+y = 5
+3 -> z
+assign ("j", 4)
+```
+ You can do multiple assignments
+```{r}
+a <- b <- 7
+```
+
+### 4.2.2 Removing Variables
+
+```{r}
+rm(j) # This frees up memory in R
+gc(a) # This frees up memory in the operating system. R does it automatically so you don't necessarily have to do this R does it for you already
+```
