@@ -186,11 +186,28 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">R For Everyone</h1>
 <h4 class="author"><em>Mustafa Zia</em></h4>
-<h4 class="date"><em>13 May, 2019</em></h4>
+<h4 class="date"><em>15 May, 2019</em></h4>
 
 </div>
 
 
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## Warning: package 'tidyverse' was built under R version 3.5.2</code></pre>
+<pre><code>## -- Attaching packages ----------------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 3.1.0       v purrr   0.3.2  
+## v tibble  2.0.1       v dplyr   0.8.0.1
+## v tidyr   0.8.3       v stringr 1.3.1  
+## v readr   1.3.1       v forcats 0.3.0</code></pre>
+<pre><code>## Warning: package 'ggplot2' was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package 'tibble' was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package 'tidyr' was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package 'readr' was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package 'purrr' was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package 'dplyr' was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package 'stringr' was built under R version 3.5.2</code></pre>
+<pre><code>## -- Conflicts -------------------------------------------------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
 <div id="chapter-4-basics-of-r" class="section level1">
 <h1>Chapter 4: Basics of R</h1>
 <div id="variables" class="section level2">
@@ -210,8 +227,8 @@ assign (&quot;j&quot;, 4)</code></pre>
 <pre class="r"><code>rm(j) # This frees up memory in R
 gc(a) # This frees up memory in the operating system. R does it automatically so you don't necessarily have to do this R does it for you already</code></pre>
 <pre><code>##           used (Mb) gc trigger (Mb) max used (Mb)
-## Ncells  513689 27.5    1163091 62.2   609182 32.6
-## Vcells 1001050  7.7    8388608 64.0  1605428 12.3</code></pre>
+## Ncells  820292 43.9    1578812 84.4  1225165 65.5
+## Vcells 1421320 10.9    8388608 64.0  1964769 15.0</code></pre>
 </div>
 </div>
 <div id="data-types" class="section level2">
@@ -323,10 +340,11 @@ q2 &lt;- c(q, &quot;Hockey&quot;, &quot;Lacrosse&quot;, &quot;Hockey&quot;, 'Wat
 <pre><code>Use ***?*** before function to see what it does. If you have a gist of the function, you can use the ***apropos (&quot;mean&quot;)*** to find out about it. </code></pre>
 <pre class="r"><code>apropos (&quot;mea&quot;)</code></pre>
 <pre><code>##  [1] &quot;.colMeans&quot;          &quot;.rowMeans&quot;          &quot;colMeans&quot;          
-##  [4] &quot;influence.measures&quot; &quot;kmeans&quot;             &quot;mean&quot;              
-##  [7] &quot;mean.Date&quot;          &quot;mean.default&quot;       &quot;mean.difftime&quot;     
-## [10] &quot;mean.POSIXct&quot;       &quot;mean.POSIXlt&quot;       &quot;rowMeans&quot;          
-## [13] &quot;weighted.mean&quot;</code></pre>
+##  [4] &quot;cummean&quot;            &quot;influence.measures&quot; &quot;kmeans&quot;            
+##  [7] &quot;mean&quot;               &quot;mean.Date&quot;          &quot;mean.default&quot;      
+## [10] &quot;mean.difftime&quot;      &quot;mean.POSIXct&quot;       &quot;mean.POSIXlt&quot;      
+## [13] &quot;mean_cl_boot&quot;       &quot;mean_cl_normal&quot;     &quot;mean_sdl&quot;          
+## [16] &quot;mean_se&quot;            &quot;rowMeans&quot;           &quot;weighted.mean&quot;</code></pre>
 </div>
 <div id="mission-data" class="section level2">
 <h2>4.7 Mission Data</h2>
@@ -358,6 +376,14 @@ null_check</code></pre>
 <pre><code>Using the ***&quot;magrittr&quot;*** package. What the pipe does is it uses the object or value from the left hand side of the pipe and inserts it into the first argument of the function on the right hand side of the pipe. </code></pre>
 <pre class="r"><code>library(magrittr)</code></pre>
 <pre><code>## Warning: package 'magrittr' was built under R version 3.5.3</code></pre>
+<pre><code>## 
+## Attaching package: 'magrittr'</code></pre>
+<pre><code>## The following object is masked from 'package:purrr':
+## 
+##     set_names</code></pre>
+<pre><code>## The following object is masked from 'package:tidyr':
+## 
+##     extract</code></pre>
 <pre class="r"><code>pipe_example &lt;- 1:10
 mean(pipe_example)</code></pre>
 <pre><code>## [1] 5.5</code></pre>
@@ -769,9 +795,8 @@ tomato &lt;- read.table(file = theUrl, header = TRUE, sep = &quot;,&quot;)</code
 <div id="read_delim" class="section level3">
 <h3>6.1.1 read_delim</h3>
 <pre><code>We use the ***readr*** package. Bunch of functions for reading text files, with ***read_delim*** the most common for reading text files. This is faster than read.table. </code></pre>
-<pre class="r"><code>library(readr)</code></pre>
-<pre><code>## Warning: package 'readr' was built under R version 3.5.2</code></pre>
-<pre class="r"><code>tomato2 &lt;- read_delim(file = theUrl, delim = &quot;,&quot;) # This returns a tibble in stead of the regular data.frame.</code></pre>
+<pre class="r"><code>library(readr)
+tomato2 &lt;- read_delim(file = theUrl, delim = &quot;,&quot;) # This returns a tibble in stead of the regular data.frame.</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   Round = col_double(),
@@ -793,6 +818,14 @@ tomato &lt;- read.table(file = theUrl, header = TRUE, sep = &quot;,&quot;)</code
 <pre><code>This is another option for reading large data quickly is fread from the data.table package. The first argument is the full filename or URL of the file to be read. The header argument indicates that the first row of the file holds the column names and the sep specifies the field delimiter. This function has a stringsAsFactors argument that is set to FALSE by default. </code></pre>
 <pre class="r"><code>library(data.table)</code></pre>
 <pre><code>## Warning: package 'data.table' was built under R version 3.5.3</code></pre>
+<pre><code>## 
+## Attaching package: 'data.table'</code></pre>
+<pre><code>## The following objects are masked from 'package:dplyr':
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following object is masked from 'package:purrr':
+## 
+##     transpose</code></pre>
 <pre class="r"><code>theUrl_2 &lt;- &quot;C:\\Users\\mustafa.zia\\Desktop\\R\\R-Projects\\TomatoFirst.csv&quot;
 tomato_1 &lt;- fread(input=theUrl_2,sep=',', header=TRUE)</code></pre>
 <p>So both read_delim and fread are faster than read.table. The option of which one to use depends on where dplyr or data.table is preferrred for data manipulation.</p>
@@ -823,8 +856,7 @@ tomato_1 &lt;- fread(input=theUrl_2,sep=',', header=TRUE)</code></pre>
 </div>
 <div id="reading-from-databases-and-also-from-other-statistical" class="section level2">
 <h2>6.3 - 6.4 Reading from Databases and also from Other Statistical</h2>
-<pre><code>You can read from Databases similar to the excel file, but it's not really that widely used anyways. </code></pre>
-<p>You can read files from spss, sas, stata, using the foreign which is similar to read.table in that you get a data.frame. You can also use the haven package and read files into a tibble (read_spss, read_sas, read_stata)</p>
+<p>You can read from Databases similar to the excel file, but it’s not really that widely used anyways. You can read files from spss, sas, stata, using the foreign which is similar to read.table in that you get a data.frame. You can also use the haven package and read files into a tibble (read_spss, read_sas, read_stata)</p>
 </div>
 <div id="r-binary-files" class="section level2">
 <h2>6.5 R Binary Files</h2>
@@ -880,6 +912,9 @@ load(&quot;C:/Users/mustafa.zia/Desktop/R/R-Projects/w.rdata&quot;)</code></pre>
 <pre><code>## Warning: package 'xml2' was built under R version 3.5.3</code></pre>
 <pre><code>## 
 ## Attaching package: 'rvest'</code></pre>
+<pre><code>## The following object is masked from 'package:purrr':
+## 
+##     pluck</code></pre>
 <pre><code>## The following object is masked from 'package:readr':
 ## 
 ##     guess_encoding</code></pre>
@@ -896,15 +931,18 @@ class(ribalta)</code></pre>
 </div>
 <div id="reading-json-data" class="section level2">
 <h2>6.8 Reading JSON Data</h2>
-<pre><code>A popular format for data, especially for APIs and document databases, is JSON, which stands for JavaScript Object Notation. It is a data format, stored in plain text, which is well suited for nested data. The two main R packages for reading JSON data are rjson and jsonlite. 
-
-The data for this example is a sample from a JSON file listing some of our favorite pizza places in New York. There is an entry for each pizzeria. Within that is a Name element and an array, named Details, that holds elements for Address, City, State, Zip and Phone. 
-
-The ***fromJSON*** function reads the file into R and parses the JSON text. By default, it attempts to sipmlify the data into a data.frame. </code></pre>
+<pre><code>A popular format for data, especially for APIs and document databases, is JSON, which stands for JavaScript Object Notation. It is a data format, stored in plain text, which is well suited for nested data. The two main R packages for reading JSON data are rjson and jsonlite. </code></pre>
+<p>The data for this example is a sample from a JSON file listing some of our favorite pizza places in New York. There is an entry for each pizzeria. Within that is a Name element and an array, named Details, that holds elements for Address, City, State, Zip and Phone.</p>
+<p>The <strong><em>fromJSON</em></strong> function reads the file into R and parses the JSON text. By default, it attempts to sipmlify the data into a data.frame.</p>
 <pre class="r"><code>library(jsonlite)</code></pre>
 <pre><code>## Warning: package 'jsonlite' was built under R version 3.5.2</code></pre>
+<pre><code>## 
+## Attaching package: 'jsonlite'</code></pre>
+<pre><code>## The following object is masked from 'package:purrr':
+## 
+##     flatten</code></pre>
 <pre class="r"><code>pizza &lt;- fromJSON('http://www.jaredlander.com/data/PizzaFavorites.json')</code></pre>
-<pre><code>The result is a two-column data.frame where the first column is the Name and the second column, named Details, is actually a one-row data.frame for each row of the outer data.frame. This may seem odd, but storing objects in cells of data.frames has long been possible and has recently become more and more the norm. We can see the Details is a list-column where each element is a data.frame. </code></pre>
+<p>The result is a two-column data.frame where the first column is the Name and the second column, named Details, is actually a one-row data.frame for each row of the outer data.frame. This may seem odd, but storing objects in cells of data.frames has long been possible and has recently become more and more the norm. We can see the Details is a list-column where each element is a data.frame.</p>
 <pre class="r"><code>class(pizza)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <pre class="r"><code>class(pizza$Details)</code></pre>
@@ -913,7 +951,7 @@ The ***fromJSON*** function reads the file into R and parses the JSON text. By d
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code>class(pizza$Details[[1]])</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<pre><code>This nested structure of a data.frame within a data.frame is best unraveled using the tools availalbe in dplyr, tidyr, and purr. </code></pre>
+<p>This nested structure of a data.frame within a data.frame is best unraveled using the tools availalbe in dplyr, tidyr, and purr.</p>
 </div>
 </div>
 <div id="chapter-7-statistical-graphics" class="section level1">
@@ -929,7 +967,7 @@ The ***fromJSON*** function reads the file into R and parses the JSON text. By d
 {
   print(&quot;Hello, World!&quot;)
 }</code></pre>
-<pre><code>First, note that in R the period (.) is just another character and has no special meaning, unlike in other languages. The body of the function is enclosed in curly braces ({}). This is not necessary if the function contains only one line, but that is rare. Notice the indenting for the commands inside the function. While not required, it is good practice to properly indent code to ensure readability. It is here in the body that we put the lines of code we want the function to perform. Calling say.hello() prints as described. </code></pre>
+<p>First, note that in R the period (.) is just another character and has no special meaning, unlike in other languages. The body of the function is enclosed in curly braces ({}). This is not necessary if the function contains only one line, but that is rare. Notice the indenting for the commands inside the function. While not required, it is good practice to properly indent code to ensure readability. It is here in the body that we put the lines of code we want the function to perform. Calling say.hello() prints as described.</p>
 <pre class="r"><code>say.hello ()</code></pre>
 <pre><code>## [1] &quot;Hello, World!&quot;</code></pre>
 </div>
@@ -956,8 +994,7 @@ hello.person(&quot;Mustafa&quot;)</code></pre>
 <pre><code>## [1] &quot;Hello Mustafa&quot;</code></pre>
 <pre class="r"><code>hello.person(&quot;Sophia&quot;)</code></pre>
 <pre><code>## [1] &quot;Hello Sophia&quot;</code></pre>
-<pre><code>The argument name can be used as a variable inside the function (it does not exist outside the function). It can also be used like any other variable and as an argument to further function calls. 
-We can add a second argument to be printed as well. When calling functions with more than one argument, there are two ways to specify which argument goes with which value, either positionally or by name. </code></pre>
+<p>The argument name can be used as a variable inside the function (it does not exist outside the function). It can also be used like any other variable and as an argument to further function calls. We can add a second argument to be printed as well. When calling functions with more than one argument, there are two ways to specify which argument goes with which value, either positionally or by name.</p>
 <pre class="r"><code>hello.person_2 &lt;- function(first,last)
 {
     print(sprintf(&quot;Hello %s %s&quot;, first, last))
@@ -988,12 +1025,12 @@ We can add a second argument to be printed as well. When calling functions with 
 </ol>
 <pre class="r"><code>hello.person_2(first = &quot;Mustafa&quot;, &quot;Zia&quot;)</code></pre>
 <pre><code>## [1] &quot;Hello Mustafa Zia&quot;</code></pre>
-<pre><code>Being able to specify the arguments by name adds a lot of flexibility to calling functions. Even partial argument names can be supplied, but it is not really recommended and should be done with caution. </code></pre>
+<p>Being able to specify the arguments by name adds a lot of flexibility to calling functions. Even partial argument names can be supplied, but it is not really recommended and should be done with caution.</p>
 <pre class="r"><code>hello.person_2(f = &quot;Mustafa&quot;, l = &quot;Zia&quot;)</code></pre>
 <pre><code>## [1] &quot;Hello Mustafa Zia&quot;</code></pre>
 <div id="default-arguments" class="section level3">
 <h3>8.2.1 Default Arguments</h3>
-<pre><code>When using multiple arguments it is sometimes desirable to not have to enter a value for each. In other languages functions can be overloaded by defining the function multiple times, each with a differing number of arguments. R instead provides the capability to specify default arguments. These can be NULL, characters, numbers, or any valid R object. Let's rewrite hello.person to provide &quot;Doe&quot; as the default last name</code></pre>
+<p>When using multiple arguments it is sometimes desirable to not have to enter a value for each. In other languages functions can be overloaded by defining the function multiple times, each with a differing number of arguments. R instead provides the capability to specify default arguments. These can be NULL, characters, numbers, or any valid R object. Let’s rewrite hello.person to provide “Doe” as the default last name</p>
 <pre class="r"><code>hello.person_3 &lt;- function(first, last = &quot;Doe&quot;)
 {print(sprintf(&quot;Hello %s %s&quot;, first, last))
 }</code></pre>
@@ -1010,9 +1047,8 @@ We can add a second argument to be printed as well. When calling functions with 
 </div>
 <div id="extra-arguments" class="section level3">
 <h3>8.2.2 Extra Arguments</h3>
-<pre><code>R offers special operator that enables functions to take an arbitrary number of arguments that do not need to be specified in the function definition. this is the dot-dot-dot argument ***(...)***. This should be used very carefully, although it can provide great flexibility. For now we will just see how it can absorb extra arguments; later we will find a use for it when passing arguments between functions. 
-
-First we have to build the function with ***...*** to absorb the extra argument. </code></pre>
+<p>R offers special operator that enables functions to take an arbitrary number of arguments that do not need to be specified in the function definition. this is the dot-dot-dot argument <strong><em>(…)</em></strong>. This should be used very carefully, although it can provide great flexibility. For now we will just see how it can absorb extra arguments; later we will find a use for it when passing arguments between functions.</p>
+<p>First we have to build the function with <strong><em>…</em></strong> to absorb the extra argument.</p>
 <pre class="r"><code>hello.person_4 &lt;- function(first, last =&quot;Doe&quot;, ...)
 {  
     print(sprintf(&quot;Hello %s %s&quot;, first, last))
@@ -1029,7 +1065,7 @@ First we have to build the function with ***...*** to absorb the extra argument.
 </div>
 <div id="return-values" class="section level2">
 <h2>8.3 Return Values</h2>
-<pre><code>Functions are generally used for computing some value, so they need a mechanism to supply that value back to the caller. This is called returning and is done quite easily. There are two ways to accomplish this with R. The value of the last line of code in a function is automatically returned, although this can be bad practice. The return command more explicitly specifies that a value should be returned and the function should be exited. To illustrate, we will build a function that doubles its only arguments and returns that value. </code></pre>
+<p>Functions are generally used for computing some value, so they need a mechanism to supply that value back to the caller. This is called returning and is done quite easily. There are two ways to accomplish this with R. The value of the last line of code in a function is automatically returned, although this can be bad practice. The return command more explicitly specifies that a value should be returned and the function should be exited. To illustrate, we will build a function that doubles its only arguments and returns that value.</p>
 <ol style="list-style-type: decimal">
 <li>First build it without an explicity return</li>
 </ol>
@@ -1078,12 +1114,12 @@ double.num_3(5)</code></pre>
 </div>
 <div id="do.call" class="section level2">
 <h2>8.4 do.call</h2>
-<pre><code>A particularly underused trick is the do.call function. This allows us to specify the name of a function either as a character or as an object, and provide arguments as a list. </code></pre>
+<p>A particularly underused trick is the do.call function. This allows us to specify the name of a function either as a character or as an object, and provide arguments as a list.</p>
 <pre class="r"><code>do.call(&quot;hello.person_4&quot;, args=list(first=&quot;Shahram&quot;, last=&quot;Zia&quot;))</code></pre>
 <pre><code>## [1] &quot;Hello Shahram Zia&quot;</code></pre>
 <pre class="r"><code>do.call(hello.person_3, args=list(first=&quot;Mustafa&quot;, last = &quot;Zia&quot;))</code></pre>
 <pre><code>## [1] &quot;Hello Mustafa Zia&quot;</code></pre>
-<pre><code>This is particularly useful when building a function that allows the user to specify an action. In the following example the user supplies a vector and a function to be run. </code></pre>
+<p>This is particularly useful when building a function that allows the user to specify an action. In the following example the user supplies a vector and a function to be run.</p>
 <pre class="r"><code>run.this &lt;- function(x, func=mean)
 {
     do.call(func, args=list(x))
@@ -1112,12 +1148,11 @@ double.num_3(5)</code></pre>
 </div>
 <div id="chapter-9-control-statements" class="section level1">
 <h1>Chapter 9: Control Statements</h1>
-<pre><code>Control statements allow us to control the flow of our programming and cause different things to happen, depending on the values of tests. Tests result in a logical, TRUE or FALSE, which is used in if-like statements. The main control statements are if, else, ifelse, and switch. </code></pre>
+<p>Control statements allow us to control the flow of our programming and cause different things to happen, depending on the values of tests. Tests result in a logical, TRUE or FALSE, which is used in if-like statements. The main control statements are if, else, ifelse, and switch.</p>
 <div id="if-and-else" class="section level2">
 <h2>9.1 if and else</h2>
-<pre><code>The most common test is the if command. It essentially says if something is TRUE, then perform some action; otherwise, do not perform that action. The thing we are testing goes inside parentheses following the if command. The most basic checks are: equal to (==), less than (&lt;), less than or equal to (&lt;=), greater than (&gt;), greater than or equal to (&gt;=) and not equal (!=). 
-
-If these tests pass they result in TRUE, and if they fail they result in FALSE. As noted in SEction 4.3.4, TRUE is numerically equivalent to 1 and FALSE is equivalent to 0. </code></pre>
+<p>The most common test is the if command. It essentially says if something is TRUE, then perform some action; otherwise, do not perform that action. The thing we are testing goes inside parentheses following the if command. The most basic checks are: equal to (==), less than (&lt;), less than or equal to (&lt;=), greater than (&gt;), greater than or equal to (&gt;=) and not equal (!=).</p>
+<p>If these tests pass they result in TRUE, and if they fail they result in FALSE. As noted in SEction 4.3.4, TRUE is numerically equivalent to 1 and FALSE is equivalent to 0.</p>
 <pre class="r"><code>as.numeric(TRUE)</code></pre>
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>as.numeric(FALSE)</code></pre>
@@ -1142,8 +1177,8 @@ if(toCheck == 5)
 {
     print(&quot;Mustafa&quot;)
 }</code></pre>
-<pre><code>Since toCheck is not equal to 5, when you run it nothing happens. Make sure the whoel statement is run.  </code></pre>
-<p>Notice that if statements are similar to functions, in that all statements (there can be one or multiple) go inside curly braces. Life is not always so simple that we want an action only if some relationship is TRUE. We often want a different action if that relationship is FALSE. In the following example we put an if statement followed by an else statement inside a function, so that it can be used repeatedly.</p>
+<p>Since toCheck is not equal to 5, when you run it nothing happens. Make sure the whoel statement is run.<br />
+Notice that if statements are similar to functions, in that all statements (there can be one or multiple) go inside curly braces. Life is not always so simple that we want an action only if some relationship is TRUE. We often want a different action if that relationship is FALSE. In the following example we put an if statement followed by an else statement inside a function, so that it can be used repeatedly.</p>
 <ol style="list-style-type: decimal">
 <li>First create the function</li>
 </ol>
@@ -1168,8 +1203,7 @@ if(toCheck == 5)
 <pre><code>## [1] &quot;goodbye&quot;</code></pre>
 <pre class="r"><code>check.bool(TRUE)# gives you hello</code></pre>
 <pre><code>## [1] &quot;hello&quot;</code></pre>
-<pre><code>Anything other than 1 caused the function ti print &quot;goodbye&quot;. This is exactly what we wanted. Passing TRUE printed &quot;hello&quot; because TRUE is numerically the same as 1. 
-Perhaps we want to successively test a few cases. That is where we can use else if. We first test a signel statement, then make another test, and then perhaps fall over to catch all. We will test is using a new check.bool</code></pre>
+<p>Anything other than 1 caused the function ti print “goodbye”. This is exactly what we wanted. Passing TRUE printed “hello” because TRUE is numerically the same as 1. Perhaps we want to successively test a few cases. That is where we can use else if. We first test a signel statement, then make another test, and then perhaps fall over to catch all. We will test is using a new check.bool</p>
 <pre class="r"><code>check.bool_1 &lt;- function(x)
 {    
     if (x==1)
@@ -1219,7 +1253,7 @@ use.switch(&quot;a&quot;)</code></pre>
 <pre><code>## [1] &quot;other&quot;</code></pre>
 <pre class="r"><code>use.switch(TRUE)</code></pre>
 <pre><code>## [1] &quot;first&quot;</code></pre>
-<pre><code>If the first argument is numeric, it is matched positionally to the followin arguments, regardless of the names of the subsequent arguments. If the numeric arguments is greater than the number of subsequent arguments, NULL is returned. </code></pre>
+<p>If the first argument is numeric, it is matched positionally to the followin arguments, regardless of the names of the subsequent arguments. If the numeric arguments is greater than the number of subsequent arguments, NULL is returned.</p>
 <pre class="r"><code>use.switch(2)</code></pre>
 <pre><code>## [1] &quot;second&quot;</code></pre>
 <pre class="r"><code>use.switch(5)</code></pre>
@@ -1231,29 +1265,999 @@ is.null(use.switch(6))</code></pre>
 </div>
 <div id="ifelese" class="section level2">
 <h2>9.3 ifelese</h2>
-<pre><code>While if is like the if statment in traditional languages, ifelse is more like the if function in Excel. The first argument is the condition to be tested (much like in a traditional if statement), the second argument is the return value if the test is TRUE and the third argument is the return value if the test is FALSE. The beauty here -- unlike with the traditional if is that this works with VECTORIZED arguments. As is often the case in R, using vectorization avoids for loops and speeds up our code. The nuances of ifelse can be tricky, so we show numerous examples. We start with a very simple example, testing whether 1 is equal to 1 and printing &quot;Yes&quot; if that is TRUE and &quot;No&quot; if it is FAlSE. </code></pre>
+<p>While if is like the if statment in traditional languages, ifelse is more like the if function in Excel. The first argument is the condition to be tested (much like in a traditional if statement), the second argument is the return value if the test is TRUE and the third argument is the return value if the test is FALSE. The beauty here – unlike with the traditional if is that this works with VECTORIZED arguments. As is often the case in R, using vectorization avoids for loops and speeds up our code. The nuances of ifelse can be tricky, so we show numerous examples. We start with a very simple example, testing whether 1 is equal to 1 and printing “Yes” if that is TRUE and “No” if it is FAlSE.</p>
 <p>…see if 1 == 1</p>
 <pre class="r"><code>ifelse( 1 == 1, &quot;Yes&quot;, &quot;No&quot;)</code></pre>
 <pre><code>## [1] &quot;Yes&quot;</code></pre>
 <p>…see if 1 == 0</p>
 <pre class="r"><code>ifelse(1 == 0, &quot;Yes&quot;, &quot;No&quot;)</code></pre>
 <pre><code>## [1] &quot;No&quot;</code></pre>
-<pre><code>This clearly gives us the results we want. ifelse uses all the regular equality tests seen in Section 9.1 and any other logical tests. It is worth noting, however, that if testing just a single element ( a vector of length 1 or a simple is.na), it is more efficient to use if than ifelse. This can result in nontrivial speedup of our code. 
-Next we will illustrate a vectorized first argument. </code></pre>
+<p>This clearly gives us the results we want. ifelse uses all the regular equality tests seen in Section 9.1 and any other logical tests. It is worth noting, however, that if testing just a single element ( a vector of length 1 or a simple is.na), it is more efficient to use if than ifelse. This can result in nontrivial speedup of our code.</p>
+<p>Next we will illustrate a vectorized first argument.</p>
 <pre class="r"><code>toTest &lt;- c(1, 1, 0, 1, 0, 1)
 ifelse(toTest == 1, &quot;Yes&quot;, &quot;No&quot;)</code></pre>
 <pre><code>## [1] &quot;Yes&quot; &quot;Yes&quot; &quot;No&quot;  &quot;Yes&quot; &quot;No&quot;  &quot;Yes&quot;</code></pre>
-<pre><code>This returned &quot;Yes&quot; for each element of toTest that equaled 1 and &quot;No&quot; for each element of toTest that did not equal 1. The TRUE and FALSE arguemnts can even refer to the testing element. </code></pre>
+<p>This returned “Yes” for each element of toTest that equaled 1 and “No” for each element of toTest that did not equal 1. The TRUE and FALSE arguemnts can even refer to the testing element.</p>
 <pre class="r"><code>ifelse(toTest == 1, toTest*3, toTest)</code></pre>
 <pre><code>## [1] 3 3 0 3 0 3</code></pre>
 <p>…the FALSE argument is repeated as needed</p>
 <pre class="r"><code>ifelse(toTest == 1, toTest*3, &quot;Zero&quot;)</code></pre>
 <pre><code>## [1] &quot;3&quot;    &quot;3&quot;    &quot;Zero&quot; &quot;3&quot;    &quot;Zero&quot; &quot;3&quot;</code></pre>
-<pre><code>Now let's say that ***toTest*** has ***NA*** elements. In that case the corresponding result from ifelse is ***NA***</code></pre>
+<p>Now let’s say that <strong><em>toTest</em></strong> has <strong><em>NA</em></strong> elements. In that case the corresponding result from ifelse is <strong><em>NA</em></strong></p>
 <pre class="r"><code>toTest[2] &lt;- NA
 ifelse(toTest == 1, &quot;Yes&quot;, &quot;No&quot;)</code></pre>
 <pre><code>## [1] &quot;Yes&quot; NA    &quot;No&quot;  &quot;Yes&quot; &quot;No&quot;  &quot;Yes&quot;</code></pre>
 <p>The same goes for the rest of the code. The NA will have the <strong><em>NA</em></strong> element.</p>
+</div>
+<div id="compound-tests" class="section level2">
+<h2>9.4 Compound Tests</h2>
+<p>Sometimes we want to test more than one relationship at a time. This is done using logical <strong><em>and</em></strong> and <strong><em>or</em></strong> operators. Thes are <strong><em>&amp;</em></strong> and <strong><em>&amp;&amp;</em></strong> for <strong><em>and</em></strong> and <strong><em>|</em></strong>. The double form <strong><em>(&amp;&amp; or ||)</em></strong> is best used in <strong><em>if</em></strong> and the single form <strong><em>(&amp; or |)</em></strong> is necessary for <strong><em>ifelse</em></strong>. The double form compares only one element from each side, while the single form compares each element of each side.</p>
+<pre class="r"><code>a &lt;- c(1,1,0,1)
+b &lt;- c(2,1,0,1)</code></pre>
+<p>…this checks each element of <strong><em>a</em></strong> and each element of <strong><em>b</em></strong></p>
+<pre class="r"><code>ifelse(a == 1 &amp; b == 1, &quot;Yes&quot;, &quot;No&quot;)</code></pre>
+<pre><code>## [1] &quot;No&quot;  &quot;Yes&quot; &quot;No&quot;  &quot;Yes&quot;</code></pre>
+<p>…this only checks the first element of <strong><em>a</em></strong> and the first element of <strong><em>b</em></strong></p>
+<pre class="r"><code>ifelse(a == 1 &amp;&amp; b == 1, &quot;Yes&quot;, &quot;No&quot;)</code></pre>
+<pre><code>## [1] &quot;No&quot;</code></pre>
+</div>
+</div>
+<div id="chapter-10-loops-the-un-r-way-to-iterate" class="section level1">
+<h1>Chapter 10: Loops, the Un-R Way to Iterate</h1>
+<p>R offers both <strong><em>for</em></strong> and <strong><em>while</em></strong> for loops.</p>
+<div id="for-loops" class="section level2">
+<h2>10.1 for Loops</h2>
+<p>The most commonly used loop is the <strong><em>for</em></strong> loop. It iterates over an index–provided as a vector–and performs some operations. For a first simple example, we print out the first ten numbers. The loop is declared using <strong><em>for</em></strong>, which takes one English-seeming argument in three parts. The third part is any vector of values of any kind, most commonly numeric or character. The first part is the variable that is iteratively assigned the values in the vector from the third part. The middle part is simply the word <strong><em>in</em></strong> indicating that the variable (the first part) is in the vector (the third part).</p>
+<pre class="r"><code>for (i in 1:10)
+{
+  print (i)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10</code></pre>
+<p>Here we generated a vector holding the numbers 1 though 10, and then printed each. Notice that this could have been performed simply by using the built-in vectorization of the <strong><em>print</em></strong> function.</p>
+<pre class="r"><code>print (1:10)</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<p>Other things that can be done, but R’s built-in vectorization is easier.</p>
+</div>
+<div id="while-loops" class="section level2">
+<h2>10.2 while Loops</h2>
+<p>Used less frequently thatn the <strong><em>for</em></strong> loop. It simply runs the code inside the braces repatedly as long as the tested condition proves true. The following example, we print the values of x and iterate it until it reaches 5.</p>
+<pre class="r"><code>x &lt;- 1
+while (x &lt;= 5)
+{
+    print(x)
+    x &lt;- x +1
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5</code></pre>
+</div>
+<div id="controlling-loops" class="section level2">
+<h2>10.3 Controlling Loops</h2>
+<p>Sometimes we have to skip to the next iteration of the loop or completely break out of it. This is accomplished with <strong><em>next</em></strong> and <strong><em>break</em></strong>. We use a <strong><em>for</em></strong> loop to demonstrate.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Next</strong></li>
+</ol>
+<pre class="r"><code>for (i in 1:10)
+{
+    if (i == 3)
+    {
+        next
+    }
+    print(i)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10</code></pre>
+<p>Notice that the number 3 did not get printed. 2. <strong>Break</strong></p>
+<pre class="r"><code>for (i in 1:10)
+{
+    if (i == 4) 
+    {
+        break
+    }
+    print(i)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3</code></pre>
+<p>Here, even though we told R to iterate over the first ten integers, it stopped after 3 because we borke the loop at 4.</p>
+</div>
+</div>
+<div id="chapter-11-group-manipulation" class="section level1">
+<h1>Chapter 11: Group Manipulation</h1>
+<div id="apply-family" class="section level2">
+<h2>11.1 Apply Family</h2>
+<p>Using <strong><em>apply, lapply, sapply, and mapply</em></strong> is used best for matrices, lists, etc.</p>
+</div>
+<div id="aggregate" class="section level2">
+<h2>11.2 Aggregate</h2>
+<p>There are a number of different ways to call aggregate, so we will look at perhaps its most convenient method, using a <em>formula</em>. We will see <em>formulas</em> used to great extent with linear models in Chapter 19, and they play a useful role in R. <em>Formulas</em> consist of a left side and a right side separated by a tilde <strong><em>(~)</em></strong>. The left side represents a variable that we want to make a calculation on, and the right side represents a variable (or more) that we want to group the calculation by. We will use the <strong>diamonds</strong> data in the <strong>ggplot2</strong> pacakage.</p>
+<pre class="r"><code>data (diamonds, package = &quot;ggplot2&quot;)
+ head(diamonds)</code></pre>
+<pre><code>## # A tibble: 6 x 10
+##   carat cut       color clarity depth table price     x     y     z
+##   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 0.23  Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+## 2 0.21  Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+## 3 0.23  Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+## 4 0.290 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+## 5 0.31  Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+## 6 0.24  Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48</code></pre>
+<p>We calculate the average <em>price</em> for each type of <em>cut</em>: Fair, Good, Very Good, Premium, Ideal. The first argument to aggregate is the formula specifying that price should be broken up (or group by in SQL terms) by cut. The second argument is the data to use, in this case diamonds. The third argument is the function to apply to each subset of the data; for us this will be the mean.</p>
+<pre class="r"><code>aggregate(price ~ cut, diamonds, mean)</code></pre>
+<pre><code>##         cut    price
+## 1      Fair 4358.758
+## 2      Good 3928.864
+## 3 Very Good 3981.760
+## 4   Premium 4584.258
+## 5     Ideal 3457.542</code></pre>
+<p>After the third argument specifying the function, additional named arguments to that function can be passed, such as <strong><em>aggregate (price ~ cut, diamonds, mean, na.rm = TRUE)</em></strong></p>
+<p>To group the data by more than one variable, add the additional variable to the right side of the <em>formula</em> separating it with a plus sign <strong><em>(+)</em></strong></p>
+<pre class="r"><code>aggregate(price ~ cut + color, diamonds, mean)</code></pre>
+<pre><code>##          cut color    price
+## 1       Fair     D 4291.061
+## 2       Good     D 3405.382
+## 3  Very Good     D 3470.467
+## 4    Premium     D 3631.293
+## 5      Ideal     D 2629.095
+## 6       Fair     E 3682.312
+## 7       Good     E 3423.644
+## 8  Very Good     E 3214.652
+## 9    Premium     E 3538.914
+## 10     Ideal     E 2597.550
+## 11      Fair     F 3827.003
+## 12      Good     F 3495.750
+## 13 Very Good     F 3778.820
+## 14   Premium     F 4324.890
+## 15     Ideal     F 3374.939
+## 16      Fair     G 4239.255
+## 17      Good     G 4123.482
+## 18 Very Good     G 3872.754
+## 19   Premium     G 4500.742
+## 20     Ideal     G 3720.706
+## 21      Fair     H 5135.683
+## 22      Good     H 4276.255
+## 23 Very Good     H 4535.390
+## 24   Premium     H 5216.707
+## 25     Ideal     H 3889.335
+## 26      Fair     I 4685.446
+## 27      Good     I 5078.533
+## 28 Very Good     I 5255.880
+## 29   Premium     I 5946.181
+## 30     Ideal     I 4451.970
+## 31      Fair     J 4975.655
+## 32      Good     J 4574.173
+## 33 Very Good     J 5103.513
+## 34   Premium     J 6294.592
+## 35     Ideal     J 4918.186</code></pre>
+<p>…To aggregate two variables, they must be combined using <strong><em>cbind</em></strong> on the left side of the formula.</p>
+<pre class="r"><code>aggregate (cbind(price, carat) ~ cut, diamonds, mean.default)</code></pre>
+<pre><code>##         cut    price     carat
+## 1      Fair 4358.758 1.0461366
+## 2      Good 3928.864 0.8491847
+## 3 Very Good 3981.760 0.8063814
+## 4   Premium 4584.258 0.8919549
+## 5     Ideal 3457.542 0.7028370</code></pre>
+<p>…Multiple variables can be supplied to both the left and right sides at the same time.</p>
+<pre class="r"><code>aggregate (cbind(price, carat) ~ cut + color, diamonds, mean)</code></pre>
+<pre><code>##          cut color    price     carat
+## 1       Fair     D 4291.061 0.9201227
+## 2       Good     D 3405.382 0.7445166
+## 3  Very Good     D 3470.467 0.6964243
+## 4    Premium     D 3631.293 0.7215471
+## 5      Ideal     D 2629.095 0.5657657
+## 6       Fair     E 3682.312 0.8566071
+## 7       Good     E 3423.644 0.7451340
+## 8  Very Good     E 3214.652 0.6763167
+## 9    Premium     E 3538.914 0.7177450
+## 10     Ideal     E 2597.550 0.5784012
+## 11      Fair     F 3827.003 0.9047115
+## 12      Good     F 3495.750 0.7759296
+## 13 Very Good     F 3778.820 0.7409612
+## 14   Premium     F 4324.890 0.8270356
+## 15     Ideal     F 3374.939 0.6558285
+## 16      Fair     G 4239.255 1.0238217
+## 17      Good     G 4123.482 0.8508955
+## 18 Very Good     G 3872.754 0.7667986
+## 19   Premium     G 4500.742 0.8414877
+## 20     Ideal     G 3720.706 0.7007146
+## 21      Fair     H 5135.683 1.2191749
+## 22      Good     H 4276.255 0.9147293
+## 23 Very Good     H 4535.390 0.9159485
+## 24   Premium     H 5216.707 1.0164492
+## 25     Ideal     H 3889.335 0.7995249
+## 26      Fair     I 4685.446 1.1980571
+## 27      Good     I 5078.533 1.0572222
+## 28 Very Good     I 5255.880 1.0469518
+## 29   Premium     I 5946.181 1.1449370
+## 30     Ideal     I 4451.970 0.9130291
+## 31      Fair     J 4975.655 1.3411765
+## 32      Good     J 4574.173 1.0995440
+## 33 Very Good     J 5103.513 1.1332153
+## 34   Premium     J 6294.592 1.2930941
+## 35     Ideal     J 4918.186 1.0635937</code></pre>
+</div>
+<div id="plyr" class="section level2">
+<h2>11.3 plyr</h2>
+<p>This uses the “split-apply-combine” method of data manipulation. The core of <strong><em>ply</em></strong> consists of functions such as <strong><em>ddply, llply, and ldply.</em></strong>. All of these manipulation functions have five letters, with first letter the type of input and the second letter indicates type of output, and always end with three letter <strong><em>ply</em></strong>. For example, <strong><em>ddply</em></strong> takes in a <em>data.frame</em> and ouputs a <em>data.frame</em>, <strong><em>llply</em></strong> takes a <em>list</em> and outputs a <em>list</em> and <strong><em>ldply</em></strong> takes in a <em>list</em> and ouputs a <em>data.frame</em>.</p>
+<blockquote>
+<p>Look at the <strong><em>Key</em></strong> and <strong><em>setkey</em></strong> functions.</p>
+</blockquote>
+</div>
+</div>
+<div id="chapter-12-faster-group-manipulation-with-dplyr" class="section level1">
+<h1>Chapter 12: Faster Group Manipulation with <em>dplyr</em></h1>
+<div id="pipes-1" class="section level2">
+<h2>12.1 Pipes</h2>
+<p>Pipes <em>( %&gt;% )</em> make everything faster. It is part of the <strong><em>magrittr</em></strong> package. With pipes we pipe objects into the first arguments of functions. These operations can be chained together, piping the result of one function into the first argument of the next. As an example, we pipe the <em>diamonds</em> data into the <em>head</em> function and that into the <em>dim</em> function.</p>
+<pre class="r"><code>library(magrittr)
+data (diamonds, package = 'ggplot2')
+dim(head(diamonds, n = 4))</code></pre>
+<pre><code>## [1]  4 10</code></pre>
+<p>…now doing this in pipe</p>
+<pre class="r"><code>diamonds %&gt;% head(4) %&gt;% dim</code></pre>
+<pre><code>## [1]  4 10</code></pre>
+</div>
+<div id="tbl" class="section level2">
+<h2>12.2 tbl</h2>
+<p>The diamonds is in a tbl format and makes reading the tables easier.</p>
+</div>
+<div id="select" class="section level2">
+<h2>12.3 select</h2>
+<p>The <strong><em>select</em></strong> function takes a data.frame (or tbl) as its first arguments then the desired columns as subsequent arguments. The function, like all <em>dplyr</em> functions, can be used in the traditional, nested manner or with pipes. You use <strong><em>select</em></strong> for columns only.</p>
+<pre class="r"><code>select(diamonds, carat, price)</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1 0.23    326
+##  2 0.21    326
+##  3 0.23    327
+##  4 0.290   334
+##  5 0.31    335
+##  6 0.24    336
+##  7 0.24    336
+##  8 0.26    337
+##  9 0.22    337
+## 10 0.23    338
+## # ... with 53,930 more rows</code></pre>
+<p>… now with pipe</p>
+<pre class="r"><code>diamonds %&gt;% select(carat, price)</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1 0.23    326
+##  2 0.21    326
+##  3 0.23    327
+##  4 0.290   334
+##  5 0.31    335
+##  6 0.24    336
+##  7 0.24    336
+##  8 0.26    337
+##  9 0.22    337
+## 10 0.23    338
+## # ... with 53,930 more rows</code></pre>
+<p>…the columns can be specified as a vector of column names as well</p>
+<pre class="r"><code>diamonds %&gt;% select(c(carat, price))</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1 0.23    326
+##  2 0.21    326
+##  3 0.23    327
+##  4 0.290   334
+##  5 0.31    335
+##  6 0.24    336
+##  7 0.24    336
+##  8 0.26    337
+##  9 0.22    337
+## 10 0.23    338
+## # ... with 53,930 more rows</code></pre>
+<p>The regular <strong><em>select</em></strong> function is designed to take unquoted column names to make interactive use easier. The names can be passed either as individual arguments or as a vector. If quoted column names are necessary, they can be used with the standard evaluation version of <strong><em>select</em></strong>, which has an ***underscore (_)*** at the end of the function.</p>
+<pre class="r"><code>diamonds %&gt;% select_('carat', 'price')</code></pre>
+<pre><code>## Warning: select_() is deprecated. 
+## Please use select() instead
+## 
+## The 'programming' vignette or the tidyeval book can help you
+## to program with select() : https://tidyeval.tidyverse.org
+## This warning is displayed once per session.</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1 0.23    326
+##  2 0.21    326
+##  3 0.23    327
+##  4 0.290   334
+##  5 0.31    335
+##  6 0.24    336
+##  7 0.24    336
+##  8 0.26    337
+##  9 0.22    337
+## 10 0.23    338
+## # ... with 53,930 more rows</code></pre>
+<p>If the column names are stored in a variable, they should be passed to the <strong><em>.dots</em></strong> argument.</p>
+<pre class="r"><code>theCols &lt;- c(&quot;carat&quot;, &quot;price&quot;)
+diamonds %&gt;% select_(.dots=theCols)</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1 0.23    326
+##  2 0.21    326
+##  3 0.23    327
+##  4 0.290   334
+##  5 0.31    335
+##  6 0.24    336
+##  7 0.24    336
+##  8 0.26    337
+##  9 0.22    337
+## 10 0.23    338
+## # ... with 53,930 more rows</code></pre>
+<p>The <strong><em>select_</em></strong> is now depracated function, so you can use <strong><em>one_of</em></strong>. You can use it as following:</p>
+<pre class="r"><code>diamonds %&gt;% select(one_of(&quot;carat&quot;, &quot;price&quot;))</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1 0.23    326
+##  2 0.21    326
+##  3 0.23    327
+##  4 0.290   334
+##  5 0.31    335
+##  6 0.24    336
+##  7 0.24    336
+##  8 0.26    337
+##  9 0.22    337
+## 10 0.23    338
+## # ... with 53,930 more rows</code></pre>
+<p>It is possible to use traditional R square bracket syntax, though the <strong><em>dplyr</em></strong> printing rules still apply.</p>
+<pre class="r"><code>diamonds[, c('carat', 'price')]</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1 0.23    326
+##  2 0.21    326
+##  3 0.23    327
+##  4 0.290   334
+##  5 0.31    335
+##  6 0.24    336
+##  7 0.24    336
+##  8 0.26    337
+##  9 0.22    337
+## 10 0.23    338
+## # ... with 53,930 more rows</code></pre>
+<p>As with the square bracket syntax, column names can be specified by position using their indices.</p>
+<pre class="r"><code>select(diamonds, 1, 7)</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1 0.23    326
+##  2 0.21    326
+##  3 0.23    327
+##  4 0.290   334
+##  5 0.31    335
+##  6 0.24    336
+##  7 0.24    336
+##  8 0.26    337
+##  9 0.22    337
+## 10 0.23    338
+## # ... with 53,930 more rows</code></pre>
+<p>…with pipe</p>
+<pre class="r"><code>diamonds %&gt;% select(1,7)</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1 0.23    326
+##  2 0.21    326
+##  3 0.23    327
+##  4 0.290   334
+##  5 0.31    335
+##  6 0.24    336
+##  7 0.24    336
+##  8 0.26    337
+##  9 0.22    337
+## 10 0.23    338
+## # ... with 53,930 more rows</code></pre>
+<p>Searching for a partial match is done with <strong><em>dplyr</em></strong> functions <strong><em>starts_with, ends_with</em></strong> and <strong><em>contains</em></strong></p>
+<pre class="r"><code>diamonds %&gt;% select(starts_with(&quot;c&quot;))</code></pre>
+<pre><code>## # A tibble: 53,940 x 4
+##    carat cut       color clarity
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;  
+##  1 0.23  Ideal     E     SI2    
+##  2 0.21  Premium   E     SI1    
+##  3 0.23  Good      E     VS1    
+##  4 0.290 Premium   I     VS2    
+##  5 0.31  Good      J     SI2    
+##  6 0.24  Very Good J     VVS2   
+##  7 0.24  Very Good I     VVS1   
+##  8 0.26  Very Good H     SI1    
+##  9 0.22  Fair      E     VS2    
+## 10 0.23  Very Good H     VS1    
+## # ... with 53,930 more rows</code></pre>
+<pre class="r"><code>diamonds %&gt;% select(ends_with(&quot;e&quot;))</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    table price
+##    &lt;dbl&gt; &lt;int&gt;
+##  1    55   326
+##  2    61   326
+##  3    65   327
+##  4    58   334
+##  5    58   335
+##  6    57   336
+##  7    57   336
+##  8    55   337
+##  9    61   337
+## 10    61   338
+## # ... with 53,930 more rows</code></pre>
+<pre class="r"><code>diamonds %&gt;% select(contains(&quot;1&quot;))</code></pre>
+<pre><code>## # A tibble: 53,940 x 0</code></pre>
+<p>Regular expression searches are done with <strong><em>matches</em></strong>. The following code searches for columns that contain the letter <em>“r”</em>, followed by any number of wildcard matches and then the letter <em>“t”</em>.</p>
+<pre class="r"><code>diamonds %&gt;% select(matches('r.+t'))</code></pre>
+<pre><code>## # A tibble: 53,940 x 2
+##    carat clarity
+##    &lt;dbl&gt; &lt;ord&gt;  
+##  1 0.23  SI2    
+##  2 0.21  SI1    
+##  3 0.23  VS1    
+##  4 0.290 VS2    
+##  5 0.31  SI2    
+##  6 0.24  VVS2   
+##  7 0.24  VVS1   
+##  8 0.26  SI1    
+##  9 0.22  VS2    
+## 10 0.23  VS1    
+## # ... with 53,930 more rows</code></pre>
+<p>Columns can be designated not to be selected by preceding the column names or numbers with the minus <strong><em>sign (-)</em></strong></p>
+<pre class="r"><code># by name
+diamonds %&gt;% select(-carat, -price) </code></pre>
+<pre><code>## # A tibble: 53,940 x 8
+##    cut       color clarity depth table     x     y     z
+##    &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Ideal     E     SI2      61.5    55  3.95  3.98  2.43
+##  2 Premium   E     SI1      59.8    61  3.89  3.84  2.31
+##  3 Good      E     VS1      56.9    65  4.05  4.07  2.31
+##  4 Premium   I     VS2      62.4    58  4.2   4.23  2.63
+##  5 Good      J     SI2      63.3    58  4.34  4.35  2.75
+##  6 Very Good J     VVS2     62.8    57  3.94  3.96  2.48
+##  7 Very Good I     VVS1     62.3    57  3.95  3.98  2.47
+##  8 Very Good H     SI1      61.9    55  4.07  4.11  2.53
+##  9 Fair      E     VS2      65.1    61  3.87  3.78  2.49
+## 10 Very Good H     VS1      59.4    61  4     4.05  2.39
+## # ... with 53,930 more rows</code></pre>
+<pre class="r"><code>diamonds %&gt;% select(-c(carat, price))</code></pre>
+<pre><code>## # A tibble: 53,940 x 8
+##    cut       color clarity depth table     x     y     z
+##    &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Ideal     E     SI2      61.5    55  3.95  3.98  2.43
+##  2 Premium   E     SI1      59.8    61  3.89  3.84  2.31
+##  3 Good      E     VS1      56.9    65  4.05  4.07  2.31
+##  4 Premium   I     VS2      62.4    58  4.2   4.23  2.63
+##  5 Good      J     SI2      63.3    58  4.34  4.35  2.75
+##  6 Very Good J     VVS2     62.8    57  3.94  3.96  2.48
+##  7 Very Good I     VVS1     62.3    57  3.95  3.98  2.47
+##  8 Very Good H     SI1      61.9    55  4.07  4.11  2.53
+##  9 Fair      E     VS2      65.1    61  3.87  3.78  2.49
+## 10 Very Good H     VS1      59.4    61  4     4.05  2.39
+## # ... with 53,930 more rows</code></pre>
+<pre class="r"><code># by number
+diamonds %&gt;% select(-1, -7)</code></pre>
+<pre><code>## # A tibble: 53,940 x 8
+##    cut       color clarity depth table     x     y     z
+##    &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Ideal     E     SI2      61.5    55  3.95  3.98  2.43
+##  2 Premium   E     SI1      59.8    61  3.89  3.84  2.31
+##  3 Good      E     VS1      56.9    65  4.05  4.07  2.31
+##  4 Premium   I     VS2      62.4    58  4.2   4.23  2.63
+##  5 Good      J     SI2      63.3    58  4.34  4.35  2.75
+##  6 Very Good J     VVS2     62.8    57  3.94  3.96  2.48
+##  7 Very Good I     VVS1     62.3    57  3.95  3.98  2.47
+##  8 Very Good H     SI1      61.9    55  4.07  4.11  2.53
+##  9 Fair      E     VS2      65.1    61  3.87  3.78  2.49
+## 10 Very Good H     VS1      59.4    61  4     4.05  2.39
+## # ... with 53,930 more rows</code></pre>
+<pre class="r"><code>diamonds %&gt;% select(-c(1, 7))</code></pre>
+<pre><code>## # A tibble: 53,940 x 8
+##    cut       color clarity depth table     x     y     z
+##    &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Ideal     E     SI2      61.5    55  3.95  3.98  2.43
+##  2 Premium   E     SI1      59.8    61  3.89  3.84  2.31
+##  3 Good      E     VS1      56.9    65  4.05  4.07  2.31
+##  4 Premium   I     VS2      62.4    58  4.2   4.23  2.63
+##  5 Good      J     SI2      63.3    58  4.34  4.35  2.75
+##  6 Very Good J     VVS2     62.8    57  3.94  3.96  2.48
+##  7 Very Good I     VVS1     62.3    57  3.95  3.98  2.47
+##  8 Very Good H     SI1      61.9    55  4.07  4.11  2.53
+##  9 Fair      E     VS2      65.1    61  3.87  3.78  2.49
+## 10 Very Good H     VS1      59.4    61  4     4.05  2.39
+## # ... with 53,930 more rows</code></pre>
+<p>Specifying columsn not to select using quoted names requires putting the minus sign inside the quotes surrounding the names of the undesired columns that are given to the <em>.dots</em> argument.</p>
+<pre class="r"><code>diamonds %&gt;% select_(.dots=c('-carat', '-price'))</code></pre>
+<pre><code>## # A tibble: 53,940 x 8
+##    cut       color clarity depth table     x     y     z
+##    &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Ideal     E     SI2      61.5    55  3.95  3.98  2.43
+##  2 Premium   E     SI1      59.8    61  3.89  3.84  2.31
+##  3 Good      E     VS1      56.9    65  4.05  4.07  2.31
+##  4 Premium   I     VS2      62.4    58  4.2   4.23  2.63
+##  5 Good      J     SI2      63.3    58  4.34  4.35  2.75
+##  6 Very Good J     VVS2     62.8    57  3.94  3.96  2.48
+##  7 Very Good I     VVS1     62.3    57  3.95  3.98  2.47
+##  8 Very Good H     SI1      61.9    55  4.07  4.11  2.53
+##  9 Fair      E     VS2      65.1    61  3.87  3.78  2.49
+## 10 Very Good H     VS1      59.4    61  4     4.05  2.39
+## # ... with 53,930 more rows</code></pre>
+<pre class="r"><code>diamonds %&gt;% select(-one_of('carat', 'price')) # when using the one_of, use minus before it. </code></pre>
+<pre><code>## # A tibble: 53,940 x 8
+##    cut       color clarity depth table     x     y     z
+##    &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Ideal     E     SI2      61.5    55  3.95  3.98  2.43
+##  2 Premium   E     SI1      59.8    61  3.89  3.84  2.31
+##  3 Good      E     VS1      56.9    65  4.05  4.07  2.31
+##  4 Premium   I     VS2      62.4    58  4.2   4.23  2.63
+##  5 Good      J     SI2      63.3    58  4.34  4.35  2.75
+##  6 Very Good J     VVS2     62.8    57  3.94  3.96  2.48
+##  7 Very Good I     VVS1     62.3    57  3.95  3.98  2.47
+##  8 Very Good H     SI1      61.9    55  4.07  4.11  2.53
+##  9 Fair      E     VS2      65.1    61  3.87  3.78  2.49
+## 10 Very Good H     VS1      59.4    61  4     4.05  2.39
+## # ... with 53,930 more rows</code></pre>
+</div>
+<div id="filter" class="section level2">
+<h2>12.4 filter</h2>
+<p>Specifying rows based on a logical expression is done with <strong><em>filter</em></strong></p>
+<pre class="r"><code>diamonds %&gt;% filter(cut == 'Ideal')</code></pre>
+<pre><code>## # A tibble: 21,551 x 10
+##    carat cut   color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.23 Ideal J     VS1      62.8    56   340  3.93  3.9   2.46
+##  3  0.31 Ideal J     SI2      62.2    54   344  4.35  4.37  2.71
+##  4  0.3  Ideal I     SI2      62      54   348  4.31  4.34  2.68
+##  5  0.33 Ideal I     SI2      61.8    55   403  4.49  4.51  2.78
+##  6  0.33 Ideal I     SI2      61.2    56   403  4.49  4.5   2.75
+##  7  0.33 Ideal J     SI1      61.1    56   403  4.49  4.55  2.76
+##  8  0.23 Ideal G     VS1      61.9    54   404  3.93  3.95  2.44
+##  9  0.32 Ideal I     SI1      60.9    55   404  4.45  4.48  2.72
+## 10  0.3  Ideal I     SI2      61      59   405  4.3   4.33  2.63
+## # ... with 21,541 more rows</code></pre>
+<p>The base R equivalent is more verbose and uses square brackets.</p>
+<pre class="r"><code>diamonds[diamonds$cut == &quot;Ideal&quot;,]</code></pre>
+<pre><code>## # A tibble: 21,551 x 10
+##    carat cut   color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.23 Ideal J     VS1      62.8    56   340  3.93  3.9   2.46
+##  3  0.31 Ideal J     SI2      62.2    54   344  4.35  4.37  2.71
+##  4  0.3  Ideal I     SI2      62      54   348  4.31  4.34  2.68
+##  5  0.33 Ideal I     SI2      61.8    55   403  4.49  4.51  2.78
+##  6  0.33 Ideal I     SI2      61.2    56   403  4.49  4.5   2.75
+##  7  0.33 Ideal J     SI1      61.1    56   403  4.49  4.55  2.76
+##  8  0.23 Ideal G     VS1      61.9    54   404  3.93  3.95  2.44
+##  9  0.32 Ideal I     SI1      60.9    55   404  4.45  4.48  2.72
+## 10  0.3  Ideal I     SI2      61      59   405  4.3   4.33  2.63
+## # ... with 21,541 more rows</code></pre>
+<p>To filter on a column being equal to one of many possible values the <em>%in%</em> operator is used.</p>
+<pre class="r"><code>diamonds %&gt;% filter(cut %in% c('Ideal', &quot;Good&quot;))</code></pre>
+<pre><code>## # A tibble: 26,457 x 10
+##    carat cut   color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.23 Good  E     VS1      56.9    65   327  4.05  4.07  2.31
+##  3  0.31 Good  J     SI2      63.3    58   335  4.34  4.35  2.75
+##  4  0.3  Good  J     SI1      64      55   339  4.25  4.28  2.73
+##  5  0.23 Ideal J     VS1      62.8    56   340  3.93  3.9   2.46
+##  6  0.31 Ideal J     SI2      62.2    54   344  4.35  4.37  2.71
+##  7  0.3  Ideal I     SI2      62      54   348  4.31  4.34  2.68
+##  8  0.3  Good  J     SI1      63.4    54   351  4.23  4.29  2.7 
+##  9  0.3  Good  J     SI1      63.8    56   351  4.23  4.26  2.71
+## 10  0.3  Good  I     SI2      63.3    56   351  4.26  4.3   2.71
+## # ... with 26,447 more rows</code></pre>
+<p>All standard equality operators can all be used with <em>filter</em></p>
+<pre class="r"><code>diamonds %&gt;% filter(price&gt;=1000)</code></pre>
+<pre><code>## # A tibble: 39,441 x 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.7  Ideal     E     SI1      62.5    57  2757  5.7   5.72  3.57
+##  2  0.86 Fair      E     SI2      55.1    69  2757  6.45  6.33  3.52
+##  3  0.7  Ideal     G     VS2      61.6    56  2757  5.7   5.67  3.5 
+##  4  0.71 Very Good E     VS2      62.4    57  2759  5.68  5.73  3.56
+##  5  0.78 Very Good G     SI2      63.8    56  2759  5.81  5.85  3.72
+##  6  0.7  Good      E     VS2      57.5    58  2759  5.85  5.9   3.38
+##  7  0.7  Good      F     VS1      59.4    62  2759  5.71  5.76  3.4 
+##  8  0.96 Fair      F     SI2      66.3    62  2759  6.27  5.95  4.07
+##  9  0.73 Very Good E     SI1      61.6    59  2760  5.77  5.78  3.56
+## 10  0.8  Premium   H     SI1      61.5    58  2760  5.97  5.93  3.66
+## # ... with 39,431 more rows</code></pre>
+<pre class="r"><code>diamonds %&gt;% filter(price != 1000)</code></pre>
+<pre><code>## # A tibble: 53,915 x 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.23  Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2 0.21  Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+##  3 0.23  Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+##  4 0.290 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+##  5 0.31  Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+##  6 0.24  Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
+##  7 0.24  Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47
+##  8 0.26  Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+##  9 0.22  Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
+## 10 0.23  Very Good H     VS1      59.4    61   338  4     4.05  2.39
+## # ... with 53,905 more rows</code></pre>
+<p>Compound filtering is accomplished by either separating the expressions with a <strong><em>comma(,)</em></strong> or an <strong><em>ampersand(&amp;)</em></strong></p>
+<pre class="r"><code>diamonds %&gt;% filter(carat&gt;2, price&lt;14000)</code></pre>
+<pre><code>## # A tibble: 644 x 10
+##    carat cut     color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;   &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  2.06 Premium J     I1       61.2    58  5203  8.1   8.07  4.95
+##  2  2.14 Fair    J     I1       69.4    57  5405  7.74  7.7   5.36
+##  3  2.15 Fair    J     I1       65.5    57  5430  8.01  7.95  5.23
+##  4  2.22 Fair    J     I1       66.7    56  5607  8.04  8.02  5.36
+##  5  2.01 Fair    I     I1       67.4    58  5696  7.71  7.64  5.17
+##  6  2.01 Fair    I     I1       55.9    64  5696  8.48  8.39  4.71
+##  7  2.27 Fair    J     I1       67.6    55  5733  8.05  8     5.43
+##  8  2.03 Fair    H     I1       64.4    59  6002  7.91  7.85  5.07
+##  9  2.03 Fair    H     I1       66.6    57  6002  7.81  7.75  5.19
+## 10  2.06 Good    H     I1       64.3    58  6091  8.03  7.99  5.15
+## # ... with 634 more rows</code></pre>
+<pre class="r"><code>diamonds %&gt;% filter(carat&gt;2 &amp; price&lt;14000)</code></pre>
+<pre><code>## # A tibble: 644 x 10
+##    carat cut     color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;   &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  2.06 Premium J     I1       61.2    58  5203  8.1   8.07  4.95
+##  2  2.14 Fair    J     I1       69.4    57  5405  7.74  7.7   5.36
+##  3  2.15 Fair    J     I1       65.5    57  5430  8.01  7.95  5.23
+##  4  2.22 Fair    J     I1       66.7    56  5607  8.04  8.02  5.36
+##  5  2.01 Fair    I     I1       67.4    58  5696  7.71  7.64  5.17
+##  6  2.01 Fair    I     I1       55.9    64  5696  8.48  8.39  4.71
+##  7  2.27 Fair    J     I1       67.6    55  5733  8.05  8     5.43
+##  8  2.03 Fair    H     I1       64.4    59  6002  7.91  7.85  5.07
+##  9  2.03 Fair    H     I1       66.6    57  6002  7.81  7.75  5.19
+## 10  2.06 Good    H     I1       64.3    58  6091  8.03  7.99  5.15
+## # ... with 634 more rows</code></pre>
+<p>A logical or statements is expressed with a vertical <strong><em>pipe (|)</em></strong></p>
+<pre class="r"><code>diamonds %&gt;% filter(carat &lt; 1 | carat &gt; 5)</code></pre>
+<pre><code>## # A tibble: 34,881 x 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.23  Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2 0.21  Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+##  3 0.23  Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+##  4 0.290 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+##  5 0.31  Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+##  6 0.24  Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
+##  7 0.24  Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47
+##  8 0.26  Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+##  9 0.22  Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
+## 10 0.23  Very Good H     VS1      59.4    61   338  4     4.05  2.39
+## # ... with 34,871 more rows</code></pre>
+<p>When filtering based on the value of a variable, <strong><em>filter_</em></strong> is used with a quoted expression. Quoted expressions can be text or expressions preceded with a <strong><em>tilde (~).</em></strong></p>
+<pre class="r"><code>diamonds %&gt;% filter_(&quot;cut == 'Ideal'&quot;)</code></pre>
+<pre><code>## Warning: filter_() is deprecated. 
+## Please use filter() instead
+## 
+## The 'programming' vignette or the tidyeval book can help you
+## to program with filter() : https://tidyeval.tidyverse.org
+## This warning is displayed once per session.</code></pre>
+<pre><code>## # A tibble: 21,551 x 10
+##    carat cut   color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.23 Ideal J     VS1      62.8    56   340  3.93  3.9   2.46
+##  3  0.31 Ideal J     SI2      62.2    54   344  4.35  4.37  2.71
+##  4  0.3  Ideal I     SI2      62      54   348  4.31  4.34  2.68
+##  5  0.33 Ideal I     SI2      61.8    55   403  4.49  4.51  2.78
+##  6  0.33 Ideal I     SI2      61.2    56   403  4.49  4.5   2.75
+##  7  0.33 Ideal J     SI1      61.1    56   403  4.49  4.55  2.76
+##  8  0.23 Ideal G     VS1      61.9    54   404  3.93  3.95  2.44
+##  9  0.32 Ideal I     SI1      60.9    55   404  4.45  4.48  2.72
+## 10  0.3  Ideal I     SI2      61      59   405  4.3   4.33  2.63
+## # ... with 21,541 more rows</code></pre>
+<pre class="r"><code>diamonds %&gt;% filter_(~cut == 'Ideal')</code></pre>
+<pre><code>## # A tibble: 21,551 x 10
+##    carat cut   color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.23 Ideal J     VS1      62.8    56   340  3.93  3.9   2.46
+##  3  0.31 Ideal J     SI2      62.2    54   344  4.35  4.37  2.71
+##  4  0.3  Ideal I     SI2      62      54   348  4.31  4.34  2.68
+##  5  0.33 Ideal I     SI2      61.8    55   403  4.49  4.51  2.78
+##  6  0.33 Ideal I     SI2      61.2    56   403  4.49  4.5   2.75
+##  7  0.33 Ideal J     SI1      61.1    56   403  4.49  4.55  2.76
+##  8  0.23 Ideal G     VS1      61.9    54   404  3.93  3.95  2.44
+##  9  0.32 Ideal I     SI1      60.9    55   404  4.45  4.48  2.72
+## 10  0.3  Ideal I     SI2      61      59   405  4.3   4.33  2.63
+## # ... with 21,541 more rows</code></pre>
+<p>… store value as a variable first</p>
+<pre class="r"><code>theCut &lt;- 'Ideal'
+diamonds %&gt;% filter_(~cut == theCut)</code></pre>
+<pre><code>## # A tibble: 21,551 x 10
+##    carat cut   color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.23 Ideal J     VS1      62.8    56   340  3.93  3.9   2.46
+##  3  0.31 Ideal J     SI2      62.2    54   344  4.35  4.37  2.71
+##  4  0.3  Ideal I     SI2      62      54   348  4.31  4.34  2.68
+##  5  0.33 Ideal I     SI2      61.8    55   403  4.49  4.51  2.78
+##  6  0.33 Ideal I     SI2      61.2    56   403  4.49  4.5   2.75
+##  7  0.33 Ideal J     SI1      61.1    56   403  4.49  4.55  2.76
+##  8  0.23 Ideal G     VS1      61.9    54   404  3.93  3.95  2.44
+##  9  0.32 Ideal I     SI1      60.9    55   404  4.45  4.48  2.72
+## 10  0.3  Ideal I     SI2      61      59   405  4.3   4.33  2.63
+## # ... with 21,541 more rows</code></pre>
+<p>The tricky part is specifying both the value and column as variables, something that might be done while using <strong><em>filter_</em></strong> inside of a function. The easiest, though perhaps no intended, way to do this is to construct the entire expression as a string using <strong><em>sprintf</em></strong></p>
+<pre class="r"><code>theCol &lt;- 'cut'
+theCut &lt;- 'Ideal'
+diamonds %&gt;% filter_(sprintf(&quot;%s == '%s'&quot;, theCol, theCut))</code></pre>
+<pre><code>## # A tibble: 21,551 x 10
+##    carat cut   color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  0.23 Ideal E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2  0.23 Ideal J     VS1      62.8    56   340  3.93  3.9   2.46
+##  3  0.31 Ideal J     SI2      62.2    54   344  4.35  4.37  2.71
+##  4  0.3  Ideal I     SI2      62      54   348  4.31  4.34  2.68
+##  5  0.33 Ideal I     SI2      61.8    55   403  4.49  4.51  2.78
+##  6  0.33 Ideal I     SI2      61.2    56   403  4.49  4.5   2.75
+##  7  0.33 Ideal J     SI1      61.1    56   403  4.49  4.55  2.76
+##  8  0.23 Ideal G     VS1      61.9    54   404  3.93  3.95  2.44
+##  9  0.32 Ideal I     SI1      60.9    55   404  4.45  4.48  2.72
+## 10  0.3  Ideal I     SI2      61      59   405  4.3   4.33  2.63
+## # ... with 21,541 more rows</code></pre>
+<p>You can also use <strong><em>UQE</em></strong> and <strong><em>as.name</em></strong> to do the above.</p>
+</div>
+<div id="slice" class="section level2">
+<h2>12.5 slice</h2>
+<p>While <strong><em>filter</em></strong> is used for specifying rows based on a logical expression, <strong><em>slice</em></strong> is used for specifying rows by row number. The desired indices are passed as a vector to <strong><em>slice</em></strong>.</p>
+<pre class="r"><code>diamonds %&gt;% slice(1:5)</code></pre>
+<pre><code>## # A tibble: 5 x 10
+##   carat cut     color clarity depth table price     x     y     z
+##   &lt;dbl&gt; &lt;ord&gt;   &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 0.23  Ideal   E     SI2      61.5    55   326  3.95  3.98  2.43
+## 2 0.21  Premium E     SI1      59.8    61   326  3.89  3.84  2.31
+## 3 0.23  Good    E     VS1      56.9    65   327  4.05  4.07  2.31
+## 4 0.290 Premium I     VS2      62.4    58   334  4.2   4.23  2.63
+## 5 0.31  Good    J     SI2      63.3    58   335  4.34  4.35  2.75</code></pre>
+<p>…combine different rows</p>
+<pre class="r"><code>diamonds %&gt;% slice(c(1:5, 8, 15:20))</code></pre>
+<pre><code>## # A tibble: 12 x 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.23  Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2 0.21  Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+##  3 0.23  Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+##  4 0.290 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+##  5 0.31  Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+##  6 0.26  Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+##  7 0.2   Premium   E     SI2      60.2    62   345  3.79  3.75  2.27
+##  8 0.32  Premium   E     I1       60.9    58   345  4.38  4.42  2.68
+##  9 0.3   Ideal     I     SI2      62      54   348  4.31  4.34  2.68
+## 10 0.3   Good      J     SI1      63.4    54   351  4.23  4.29  2.7 
+## 11 0.3   Good      J     SI1      63.8    56   351  4.23  4.26  2.71
+## 12 0.3   Very Good J     SI1      62.7    59   351  4.21  4.27  2.66</code></pre>
+<p>Note that the row numbers displayed on the left of the results are not the row numbers indicated by <strong><em>slice</em></strong> but rather the row numbers of the returned results. Negative indices are used to indicate rows that hsould not be returned.</p>
+<pre class="r"><code>diamonds %&gt;% slice(-1)</code></pre>
+<pre><code>## # A tibble: 53,939 x 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.21  Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+##  2 0.23  Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+##  3 0.290 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+##  4 0.31  Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+##  5 0.24  Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
+##  6 0.24  Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47
+##  7 0.26  Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+##  8 0.22  Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
+##  9 0.23  Very Good H     VS1      59.4    61   338  4     4.05  2.39
+## 10 0.3   Good      J     SI1      64      55   339  4.25  4.28  2.73
+## # ... with 53,929 more rows</code></pre>
+</div>
+<div id="mutate" class="section level2">
+<h2>12.6 mutate</h2>
+<p>Creating a new columns or modifying existing columns is done with the <strong><em>mutate</em></strong> function. Creating a new column that is the ratio of <em>price</em> and <em>carat</em> is as siimplle as providing that ratio as an argument to <strong><em>mutate</em></strong>.</p>
+<pre class="r"><code>diamonds %&gt;% mutate(price/carat)</code></pre>
+<pre><code>## # A tibble: 53,940 x 11
+##    carat cut   color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.23  Ideal E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2 0.21  Prem~ E     SI1      59.8    61   326  3.89  3.84  2.31
+##  3 0.23  Good  E     VS1      56.9    65   327  4.05  4.07  2.31
+##  4 0.290 Prem~ I     VS2      62.4    58   334  4.2   4.23  2.63
+##  5 0.31  Good  J     SI2      63.3    58   335  4.34  4.35  2.75
+##  6 0.24  Very~ J     VVS2     62.8    57   336  3.94  3.96  2.48
+##  7 0.24  Very~ I     VVS1     62.3    57   336  3.95  3.98  2.47
+##  8 0.26  Very~ H     SI1      61.9    55   337  4.07  4.11  2.53
+##  9 0.22  Fair  E     VS2      65.1    61   337  3.87  3.78  2.49
+## 10 0.23  Very~ H     VS1      59.4    61   338  4     4.05  2.39
+## # ... with 53,930 more rows, and 1 more variable: `price/carat` &lt;dbl&gt;</code></pre>
+<p>Depending on the size of the terminal, not all columns will be printed to the screen. To ensure this new column can fit on the screen, we select a few columns of interest using <strong><em>select</em></strong> and then pipe that result into <strong><em>mutate</em></strong>.</p>
+<pre class="r"><code>diamonds %&gt;% select(carat, price) %&gt;% mutate(price/carat)</code></pre>
+<pre><code>## # A tibble: 53,940 x 3
+##    carat price `price/carat`
+##    &lt;dbl&gt; &lt;int&gt;         &lt;dbl&gt;
+##  1 0.23    326         1417.
+##  2 0.21    326         1552.
+##  3 0.23    327         1422.
+##  4 0.290   334         1152.
+##  5 0.31    335         1081.
+##  6 0.24    336         1400 
+##  7 0.24    336         1400 
+##  8 0.26    337         1296.
+##  9 0.22    337         1532.
+## 10 0.23    338         1470.
+## # ... with 53,930 more rows</code></pre>
+<p>The resulting column is unnamed, which is easily remedied by assigning the expression <strong><em>(price/carat)</em></strong> to a name</p>
+<pre class="r"><code>diamonds %&gt;% select(carat, price) %&gt;% mutate(Ratio = price/carat)</code></pre>
+<pre><code>## # A tibble: 53,940 x 3
+##    carat price Ratio
+##    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+##  1 0.23    326 1417.
+##  2 0.21    326 1552.
+##  3 0.23    327 1422.
+##  4 0.290   334 1152.
+##  5 0.31    335 1081.
+##  6 0.24    336 1400 
+##  7 0.24    336 1400 
+##  8 0.26    337 1296.
+##  9 0.22    337 1532.
+## 10 0.23    338 1470.
+## # ... with 53,930 more rows</code></pre>
+<p>Columns created with <strong><em>mutate</em></strong> can be used immediately in the same <strong><em>mutate</em></strong> call</p>
+<pre class="r"><code>diamonds %&gt;% 
+    select(carat, price) %&gt;% 
+    mutate(Ratio=price/carat, Double = Ratio*2)</code></pre>
+<pre><code>## # A tibble: 53,940 x 4
+##    carat price Ratio Double
+##    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 0.23    326 1417.  2835.
+##  2 0.21    326 1552.  3105.
+##  3 0.23    327 1422.  2843.
+##  4 0.290   334 1152.  2303.
+##  5 0.31    335 1081.  2161.
+##  6 0.24    336 1400   2800 
+##  7 0.24    336 1400   2800 
+##  8 0.26    337 1296.  2592.
+##  9 0.22    337 1532.  3064.
+## 10 0.23    338 1470.  2939.
+## # ... with 53,930 more rows</code></pre>
+<p>Notice this did not change the <em>diamonds</em> data. In order to save changes, the new result needs to be explicitly assigned to the object <em>diamonds</em>. A nice feature of the <strong><em>magrittr</em></strong> package is the assignment pipe <strong><em>( %&lt;&gt;% )</em></strong>, which both pipes the left-hand side into the function on the right-hand side and assigns the result back to the object on the lef-hand side.</p>
+<pre class="r"><code>diamonds2 &lt;- diamonds
+diamonds2</code></pre>
+<pre><code>## # A tibble: 53,940 x 10
+##    carat cut       color clarity depth table price     x     y     z
+##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 0.23  Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+##  2 0.21  Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+##  3 0.23  Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+##  4 0.290 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+##  5 0.31  Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+##  6 0.24  Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
+##  7 0.24  Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47
+##  8 0.26  Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+##  9 0.22  Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
+## 10 0.23  Very Good H     VS1      59.4    61   338  4     4.05  2.39
+## # ... with 53,930 more rows</code></pre>
+<pre class="r"><code> diamonds2 %&lt;&gt;%
+    select(carat, price) %&gt;% 
+    mutate(Ratio = price/carat, Double = Ratio*2)
+diamonds2</code></pre>
+<pre><code>## # A tibble: 53,940 x 4
+##    carat price Ratio Double
+##    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 0.23    326 1417.  2835.
+##  2 0.21    326 1552.  3105.
+##  3 0.23    327 1422.  2843.
+##  4 0.290   334 1152.  2303.
+##  5 0.31    335 1081.  2161.
+##  6 0.24    336 1400   2800 
+##  7 0.24    336 1400   2800 
+##  8 0.26    337 1296.  2592.
+##  9 0.22    337 1532.  3064.
+## 10 0.23    338 1470.  2939.
+## # ... with 53,930 more rows</code></pre>
+<p>This new pipe does not preclude the traditional assignment operator.</p>
+<pre class="r"><code>diamonds2 &lt;- diamonds2 %&gt;% 
+    mutate(Quadruple = Double *2)
+diamonds2</code></pre>
+<pre><code>## # A tibble: 53,940 x 5
+##    carat price Ratio Double Quadruple
+##    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
+##  1 0.23    326 1417.  2835.     5670.
+##  2 0.21    326 1552.  3105.     6210.
+##  3 0.23    327 1422.  2843.     5687.
+##  4 0.290   334 1152.  2303.     4607.
+##  5 0.31    335 1081.  2161.     4323.
+##  6 0.24    336 1400   2800      5600 
+##  7 0.24    336 1400   2800      5600 
+##  8 0.26    337 1296.  2592.     5185.
+##  9 0.22    337 1532.  3064.     6127.
+## 10 0.23    338 1470.  2939.     5878.
+## # ... with 53,930 more rows</code></pre>
+</div>
+<div id="summarize" class="section level2">
+<h2>12.7 summarize</h2>
+<p>While <strong><em>mutate</em></strong> applies vectorized functions over columns, <strong><em>summarize</em></strong> applies functions that return a result of length one such as <strong><em>mean, max, median</em></strong> or other similar functions. This behavior is similar to the <strong><em>with</em></strong> function in base R.</p>
+<pre class="r"><code>summarize(diamonds, mean(price))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `mean(price)`
+##           &lt;dbl&gt;
+## 1         3933.</code></pre>
+<p>..doing it with pipe</p>
+<pre class="r"><code>diamonds %&gt;% summarize(mean(price))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `mean(price)`
+##           &lt;dbl&gt;
+## 1         3933.</code></pre>
+<p>Another nice feature of <strong><em>summarize</em></strong> is the capability to name the resulting calculation and to perform multiple calculations in the same cell.</p>
+<pre class="r"><code>diamonds %&gt;% 
+    summarize(AvgPrice = mean(price),
+              MedianPrice=median(price),
+              AvgCarat=mean(carat))</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##   AvgPrice MedianPrice AvgCarat
+##      &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+## 1    3933.        2401    0.798</code></pre>
+</div>
+<div id="group_by" class="section level2">
+<h2>12.8 group_by</h2>
+<p>The <strong><em>summarize</em></strong> function is moderately useful by itself but really shines when used with <strong><em>group_by</em></strong> to first partition the data and then apply a function to each partition independently. To split the data according to a variable and then apply a summary function to each partition, the data is first passed to <strong><em>group_by</em></strong> and resulting grouped <strong>data.frame</strong> or <strong>tbl</strong> is passed to <strong><em>summarize</em></strong>, which allows functions to be applied to individual columns. This usage illustrates the power and ease of pipes.</p>
+<pre class="r"><code>diamonds %&gt;% 
+    group_by(cut) %&gt;% 
+    summarize(AvgPrice=mean(price))</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   cut       AvgPrice
+##   &lt;ord&gt;        &lt;dbl&gt;
+## 1 Fair         4359.
+## 2 Good         3929.
+## 3 Very Good    3982.
+## 4 Premium      4584.
+## 5 Ideal        3458.</code></pre>
+<p>This is a major eloquent, and faster, way to aggregate data than the <strong><em>aggregate</em></strong> function, and it more easily enables multiple calculations and grouping variables.</p>
+<pre class="r"><code>diamonds %&gt;% 
+    group_by(cut) %&gt;% 
+    summarize(AvgPrice=mean(price), SumCarat = sum(carat))</code></pre>
+<pre><code>## # A tibble: 5 x 3
+##   cut       AvgPrice SumCarat
+##   &lt;ord&gt;        &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Fair         4359.    1684.
+## 2 Good         3929.    4166.
+## 3 Very Good    3982.    9743.
+## 4 Premium      4584.   12301.
+## 5 Ideal        3458.   15147.</code></pre>
+<pre class="r"><code>diamonds %&gt;% 
+    group_by(cut, color) %&gt;% 
+    summarize(AvgPrice = mean(price), SumCarat = sum(carat))</code></pre>
+<pre><code>## # A tibble: 35 x 4
+## # Groups:   cut [5]
+##    cut   color AvgPrice SumCarat
+##    &lt;ord&gt; &lt;ord&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+##  1 Fair  D        4291.     150.
+##  2 Fair  E        3682.     192.
+##  3 Fair  F        3827.     282.
+##  4 Fair  G        4239.     321.
+##  5 Fair  H        5136.     369.
+##  6 Fair  I        4685.     210.
+##  7 Fair  J        4976.     160.
+##  8 Good  D        3405.     493.
+##  9 Good  E        3424.     695.
+## 10 Good  F        3496.     705.
+## # ... with 25 more rows</code></pre>
+<p>When run on a grouped <strong>data.frame</strong>, the <strong><em>summarize</em></strong> function drops the innermost level of grouping. That is why the first statement in the previous code returned a <strong>data.frame</strong> with no groups and the second statement returned a <strong>data.frame</strong> with one group.</p>
+</div>
+<div id="arrange" class="section level2">
+<h2>12.9 arrange</h2>
 </div>
 </div>
 
