@@ -561,7 +561,7 @@ download.file(url = 'http://www.jaredlander.com/data/ExcelExample.xlsx', destfil
 
 ```
 
-...ffter downloading the file, we check the sheets in the Excel file. 
+...after downloading the file, we check the sheets in the Excel file. 
 ```{r}
 library(readxl)
 excel_sheets('C:\\Users\\mustafa.zia\\Desktop\\R\\R-Projects\\Zia Workplan FY19.xlsx')

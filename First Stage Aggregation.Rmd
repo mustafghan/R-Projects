@@ -1,0 +1,63 @@
+---
+title: "First Stage Aggregation"
+author: "Mustafa Zia"
+date: "5/24/2019"
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+library(readr)
+library(readxl)
+```
+
+
+# Method 1 
+
+Created a `function` that will download each individual file, unzips it and reads the file by creating an object. 
+I HAVE TO ADD a PART To READ the RAW DATA as WELL!
+```{r Reading_File, results = 'hide', eval=FALSE}
+psd.function <- function(file)
+    {
+
+        my.file <- paste0("C:\\Users\\mustafa.zia\\Desktop\\FAS (PSD)\\",file,"_csv.zip") 
+        url <- paste0("https://apps.fas.usda.gov/psdonline/downloads/",file,"_csv.zip") 
+        download.file(url = url, destfile = my.file) # this downloads the zip file
+        read_csv(unzip(my.file, exdir = "C:\\Users\\mustafa.zia\\Desktop\\FAS (PSD)"))
+
+    }
+
+psd.all.data                  <- psd.function(file = "psd_alldata")
+psd.coffee                    <- psd.function(file = "psd_coffee")
+psd.cotton                    <- psd.function(file = "psd_cotton")
+psd.dairy                     <- psd.function(file = "psd_dairy")
+psd.cotton                    <- psd.function(file = "psd_cotton")
+psd.eu.area.prod              <- psd.function(file = "psd_eu_area_prod")
+psd.fruits.veg                <- psd.function(file = "psd_fruits_vegetables")
+psd.grains                    <- psd.function(file = "psd_grains_pulses")
+psd.juice                     <- psd.function(file = "psd_juice")
+psd.livstock.poultry          <- psd.function(file = "psd_livestock")
+psd.oilseeds                  <- psd.function(file = "psd_oilseeds")
+psd.russiabreakdown.area.prod <- psd.function(file = "psd_russiabreakdown_area_prod")
+psd.sugar                     <- psd.function(file = "psd_sugar")
+psd.tree.nuts                 <- psd.function(file = "psd_tree_nuts")
+
+```
+
+# Get the mapping file
+
+```{r Get_Mapping_Files, results = 'hide' }
+mapping.function <- function(file)
+{
+    read_excel(paste0("C:\\Users\\mustafa.zia\\Desktop\\FAS (PSD)\\Mapping\\",file,".xlsx"))
+}                                      
+
+attributes.data  <- mapping.function(file = "attributes")
+commodities.data <- mapping.function(file = "commodities")
+countries.data   <- mapping.function(file = "countries")
+regions.data     <- mapping.function(file = "regions")
+units.data       <- mapping.function(file = "units")
+```
+
+
+
