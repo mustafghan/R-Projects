@@ -60,4 +60,55 @@ units.data       <- mapping.function(file = "units")
 ```
 
 
+```{r}
+Selected_Grains <- psd.grains %>% 
+    filter(Commodity_Code %in% c("0459200", "0440000")) %>% 
+    mutate(Commodity_Code = "Total Grains") %>% 
+    group_by(Commodity_Code,Country_Name, Calendar_Year, Attribute_ID) %>%
+    summarise(Amount = sum(Value)) %>% 
+    bind_rows(psd.grains,.)
+
+Check.Afghanistan_1 <- psd.grains %>% 
+filter(Commodity_Code %in% c("0459200", "0440000"),Country_Name == "Afghanistan", Calendar_Year == 2006, Attribute_ID =="004") %>% 
+summarise(Amount = sum(Value))
+```
+
+
+
+```{r}
+
+# This reads all the sheets and turns each spececif sheet into a list 
+ComCsvTs_Path  <- "C:\\Users\\mustafa.zia\\Desktop\\FAS (PSD)\\Mapping\\commodities.xlsx"
+excel_sheets(path=ComCsvTs_Path)
+
+tab_names <- excel_sheets(path=ComCsvTs_Path)
+list_all <- lapply(tab_names,function(x) read_excel(path=ComCsvTs_Path, sheet = x))
+```
+
+
+```{r}
+Read.Sheet <- function(sheet)
+    
+{
+    read_excel(ComCsvTs_Path, sheet = sheet) # it would be a good idea to later turn the ComCsvTS into a list of different control/mapping files. That way you will have this particular function just reading the control files separately. Create another "macro" for the filepath. 
+}
+
+ commodities <- Read.Sheet("commodities")
+ Poultry_Total <- Read.Sheet("Poultry_Chicken+Turkey")
+ TOTGRNS    <- Read.Sheet("Total_Coarse_Grains")
+ TOTSEED    <- Read.Sheet("Total_Oilseeds")
+
+ # Here we will create the aggregates for the Total Grains
+ Total.Grains <- psd.grains %>% 
+    filter(Commodity_Code %in% TOTGRNS$Commodity_Code_New) %>% 
+    mutate(Commodity_Code = "Total Grains") %>% 
+    group_by(Commodity_Code,Commodity_Description, Country_Code,Country_Name,Market_Year,Calendar_Year,Month,Attribute_ID,Attribute_Description,Unit_ID,Unit_Description) %>%
+    summarise(Value = sum(Value)) %>% 
+    bind_rows(psd.grains,.)
+ 
+ Check.Afghanistan_2 <- Total.Grains %>% 
+filter(Country_Name == "Afghanistan", Calendar_Year == 2006, Attribute_ID =="004") 
+```
+
+my.list = list("commodities","Poultry_Chicken+Turkey","Total_Coarse_Grains","Total_Oilseeds" )
 
